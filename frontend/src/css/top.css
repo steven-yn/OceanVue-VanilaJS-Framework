@@ -1,0 +1,17 @@
+#top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+#top h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#top button {
+  height: fit-content;
+}
