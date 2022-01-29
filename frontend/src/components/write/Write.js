@@ -1,13 +1,11 @@
 /** @jsx h */
 import Header from '../common/header';
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
 import submitButton from './submitButton';
 
 const h = (type, props, ...children) => {
   return { type, props, children };
 };
-
+/*
 const quillLoad = () => {
   const quillElement = document.getElementById('editor');
   new Quill(quillElement, {
@@ -29,8 +27,8 @@ const quillLoad = () => {
 function* genFunc() {
   yield quillLoad();
 }
-
-export const waitCreate = genFunc();
+*/
+// export const waitCreate = genFunc();
 
 export const Write = () => {
   return (

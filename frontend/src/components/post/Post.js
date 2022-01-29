@@ -6,8 +6,8 @@ const h = (type, props, ...children) => {
   return { type, props, children };
 };
 
-const PostTop = () => {
-  return (
+export const PostTop = async () => {
+  return await (
     <div>
       <div id="top">
         <h1>title</h1>

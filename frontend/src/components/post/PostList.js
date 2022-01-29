@@ -1,6 +1,4 @@
 /** @jsx h */
-import { createRealNode } from '../../lib/generator';
-import { postRouting } from '../../app';
 
 const h = (type, props, ...children) => {
   return { type, props, children };
@@ -37,7 +35,7 @@ const PostListTop = () => {
     </div>
   );
 };
-
+/*
 export const getPostList = async ($PostItemBlock) => {
   const res = await fetch(`http://localhost:5000/api/`);
   const body = await res.json();
@@ -51,9 +49,9 @@ export const getPostList = async ($PostItemBlock) => {
 
   postRouting(idList);
 };
-
-const PostItem = ({ postId, title, author, wrDate }) => {
-  return (
+*/
+export const PostItem = async ({ postId, title, author, wrDate }) => {
+  return await (
     <div>
       <h3>
         <a href={'#' + postId}>{title}</a>
