@@ -23,6 +23,21 @@ const req = {
 
 export default req;
 
+/* 2. 에러 처리
+const wrongUrl = 'https://jsonplacr.typicode.c/xxx';
+
+//부적절한 URL 지정되서 404 에러 발생.
+fetch(wrongUrl)
+  // res 는 HTTP res body
+  .then((res) => {
+    if (!res.ok) throw new Error(res.statusText);
+    return res.json();
+  })
+  .then((todo) => console.log(todo))
+  .catch((err) => console.log(err));
+//
+*/
+
 // 3.CRUD 요청문 작성 및 요청보내기
 
 // 3-1 get 요청

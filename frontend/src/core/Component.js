@@ -1,23 +1,42 @@
 import Post from '../components/post/Post';
-import { PostItem } from '../components/post/PostList';
+import PostList from '../components/post/PostList';
 import req from '../lib/api/xmrFetch';
+import { PostItem } from '../components/post/PostList';
+
+// 생성자 함수
 
 const Component = (function () {
-  let _routes = []; // (바깥에서 참조 불가, App 의 routes에 저장이 된다.)
   let $root = {};
+  let _routes = []; // (바깥에서 참조 불가, App 의 routes에 저장이 된다.)
+  let _state = {};
+  let load = true;
+  let done = false;
 
   function Component($entry, initRoutes) {
     if ($entry) {
       $root = $entry;
       _routes = initRoutes;
     }
-    this.getPostId();
+    this.vdom = [];
+    this.vNewDom = [];
   }
 
-  Component.prototype.setState = function () {};
+  Component.prototype.defineState = function (compState) {
+    _state = compState;
+  };
 
-  Component.prototype.render = function (virtualDOM) {
-    const createRealNode = (virtualDOM) => {
+  Component.prototype.loadState = function () {};
+
+  Component.prototype.useState = function (initState) {
+    // const [state, setState] = useState();
+  };
+
+  Component.prototype.render = function (virtualDOM, $elem = '') {
+    console.log('render 실행');
+
+    const defineVirtualNode = (virtualDOM) => {
+      this.vdom.push(virtualDOM);
+
       if (typeof virtualDOM === 'string') {
         return document.createTextNode(virtualDOM);
       }
@@ -28,43 +47,96 @@ const Component = (function () {
         .filter(([attr, value]) => value)
         .forEach(([attr, value]) => elem.setAttribute(attr, value));
 
-      const children = virtualDOM.children.map(createRealNode);
-
+      // 이곳의 virtualDOM 에서 부터 시작한다고 생각하자.
+      //console.log(virtualDOM);
+      const children = virtualDOM.children.map(defineVirtualNode);
+      //console.log(children);
+      //console.log(virtualDOM);
       // elem에 변환된 children dom을 추가한다.
       children.forEach((child) => elem.appendChild(child));
 
       return elem;
     };
 
-    const dom = createRealNode(virtualDOM);
+    const isDiffNode = (oldVdom, newVdom) => {
+      const diff = newVdom.filter((ne) => !oldVdom.includes(ne));
+      diff.forEach((el) => defineVirtualNode(el));
+    };
+    /*
+    const createRealNode = (targetList) => {
+      targetList.forEach((vnode) => {
+        if (typeof vnode === 'string') {
+          return document.createTextNode(vnode);
+        }
+        const elem = document.createElement(vnode.type);
+      });
+      //console.log(targetList);
+     
+      const reCreate = (vnode) => {
+        
 
+        const elem = document.createElement(vnode.type);
+        const children = virtualDOM.children.map(reCreate);
+        children.forEach((child) => elem.appendChild(child));
+
+        return elem;
+      };
+
+      targetList.forEach((vnode) => {});
+      
+    };
+*/
+    const oldDom = this.vdom;
+    this.vdom = [];
+
+    let dom = defineVirtualNode(virtualDOM);
+
+    const newDom = this.vdom;
+    isDiffNode(oldDom, newDom);
+
+    /*
+    const targetVnode = isDiffNode(oldDom, newDom);
+
+    targetVnode.map()
+    const renderDom = createRealNode();
+*/
     // 페이지 전환, 새로고침시 root 하위 요소가 있으면 모든 노드를 제거.
-    if ($root.firstElementChild) {
-      $root.removeChild($root.firstElementChild);
-    }
 
-    return $root.appendChild(dom);
+    if ($elem && done) {
+      return $elem.appendChild(dom);
+    } else {
+      return $root.appendChild(dom);
+    }
   };
 
+  /*
+  
+const children = virtualDOM.children.map(defineVirtualNode);
+
+      //console.log(virtualDOM);
+      // elem에 변환된 children dom을 추가한다.
+      children.forEach((child) => elem.appendChild(child));
+
+      return elem;
+    };
+    const child = vnode.children.map(createRealNode);
+        child.forEach((vchild) => 
+  */
+
   Component.prototype.getPostId = async function () {
-    const res = await req.get(`http://localhost:5000/api/`);
+    const res = await fetch(`http://localhost:5000/api/`).then((done = true));
     const body = await res.json();
     const idList = [];
 
-    body.forEach((item) => idList.push(item.postId));
+    await body.forEach((item) => idList.push(item.postId));
 
     // postId 로 post routes 등록
     this.dataRouting(idList);
 
     // PostList 에 Props 전달
-    body.forEach((item) => PostItem(item));
+    const $PostListWrap = document.getElementById('PostListWrap');
+    this.render(PostList(body, done), $PostListWrap);
   };
-
-  /*
-    body.forEach((item) =>
-        $PostItemBlock.appendChild(createRealNode(PostItem(item))),
-    );
-  */
 
   Component.prototype.dataRouting = function (idList) {
     //

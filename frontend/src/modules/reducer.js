@@ -1,10 +1,11 @@
 import { createStore } from 'redux';
 
+/*
 const divToggle = document.querySelector('.toggle');
 const counter = document.querySelector('h1');
 const btnIncrease = document.querySelector('#increase');
 const btnDecrease = document.querySelector('#decrease');
-
+*/
 const TOGGLE_SWITCH = 'TOGGLE_SWITCH';
 const INCREASE = 'INCREASE';
 const DECREASE = 'DECREASE';
@@ -43,7 +44,7 @@ function reducer(state = initialState, action) {
 }
 
 const store = createStore(reducer);
-
+/*
 const render = () => {
   const state = store.getState(); // 현재 상태를 불러옴.
   // 토글 처리
@@ -55,10 +56,14 @@ const render = () => {
   // 카운터 처리
   counter.innerText = state.counter;
 };
+*/
 
+/*
 render();
 store.subscribe(render);
+*/
 
+/*
 divToggle.onclick = () => {
   store.dispatch(toggleSwitch());
 };
@@ -70,3 +75,4 @@ btnIncrease.onclick = () => {
 btnDecrease.onclick = () => {
   store.dispatch(decrease());
 };
+*/

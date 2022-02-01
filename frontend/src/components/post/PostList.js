@@ -1,12 +1,28 @@
 /** @jsx h */
+import Component from '../../core/Component';
 
 const h = (type, props, ...children) => {
+  if (Array.isArray(...children)) {
+    const arrConv = Object.values(children[0]);
+    children = arrConv;
+  }
+  /*
+    const conv = arrChildren.map((vdom) => ({
+      type: vdom.type,
+      props: vdom.props,
+      children: vdom.children,
+    }));
+    console.log(conv);
+    //return { type, props, children };
+  }
+  */
+
   return { type, props, children };
 };
 
 const PostListTop = () => {
   return (
-    <div>
+    <div id="PostListTop">
       <div id="top">
         <h1>게시판</h1>
         <div class="rightBox">
@@ -35,23 +51,10 @@ const PostListTop = () => {
     </div>
   );
 };
-/*
-export const getPostList = async ($PostItemBlock) => {
-  const res = await fetch(`http://localhost:5000/api/`);
-  const body = await res.json();
-  const idList = [];
 
-  body.forEach((item) =>
-    $PostItemBlock.appendChild(createRealNode(PostItem(item))),
-  );
-
-  body.forEach((item) => idList.push(item.postId));
-
-  postRouting(idList);
-};
-*/
-export const PostItem = async ({ postId, title, author, wrDate }) => {
-  return await (
+export const PostItem = ({ postId, title, author, wrDate }) => {
+  //console.log(postId);
+  return (
     <div>
       <h3>
         <a href={'#' + postId}>{title}</a>
@@ -64,11 +67,18 @@ export const PostItem = async ({ postId, title, author, wrDate }) => {
   );
 };
 
-const PostList = () => {
+const PostList = (itemList, done) => {
+  const posts =
+    itemList && done ? (
+      itemList.map((item) => PostItem(item))
+    ) : (
+      <div>로딩중...</div>
+    );
+
   return (
     <div id="PostListBlock" class="common">
       {PostListTop()}
-      <div id="PostItemBlock"></div>
+      <div id="PostItemBlock">{posts}</div>
       <div id="ButtonWrap">
         <button>
           <a href="#write">새 글 작성하기</a>
