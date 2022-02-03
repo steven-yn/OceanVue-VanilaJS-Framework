@@ -34,6 +34,6 @@ export const loading = createStore(reducer);
 
 /*
 divToggle.onclick = () => {
-  loading.dispatch(startLoading());
+  loading.dispatch(startLoading(LIST_POSTS));
 };
 */

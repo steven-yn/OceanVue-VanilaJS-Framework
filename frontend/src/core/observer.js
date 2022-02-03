@@ -1,7 +1,15 @@
 let currentObserver = null;
 
+const debounceFrame = (callback) => {
+  let currentCallback = -1;
+  return () => {
+    cancelAnimationFrame(currentCallback);
+    currentCallback = requestAnimationFrame(callback);
+  };
+};
+
 export const observe = (fn) => {
-  currentObserver = fn;
+  currentObserver = debounceFrame(fn);
   fn();
   currentObserver = null;
 };
@@ -18,6 +26,8 @@ export const observable = (obj) => {
       },
 
       set(value) {
+        if (_value === value) return;
+        if (JSON.stringify(_value) === JSON.stringify(value)) return;
         _value = value;
         observers.forEach((fn) => fn());
       },
