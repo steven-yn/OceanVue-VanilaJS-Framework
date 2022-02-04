@@ -1,7 +1,7 @@
 /** @jsx h */
 
 import Header from './components/common/header';
-import PostList from './components/post/PostList';
+import PostListContainer from './containers/PostListContainer';
 import Component from './core/Component';
 import { Write } from './components/write/write';
 
@@ -15,11 +15,11 @@ const App = () => {
     <div id="wrap">
       {Header()}
       <div class="spacer"></div>
-      <div id="PostListWrap">{PostList()}</div>
+      <div id="PostListWrap">{PostListContainer()}</div>
     </div>
   );
 };
-//
+
 export default App();
 
 const $entry = document.getElementById('root');
@@ -32,26 +32,11 @@ const routes = [
 
 const compEntry = new Component($entry, routes);
 
-const router = () => {
-  const hashPath = window.location.hash.replace('#', '');
-  const uiComponent =
-    routes.find((route) => route.path === hashPath).component || '';
-
-  compEntry.render(uiComponent);
-  if (hashPath === '') {
-    compEntry.getPostId();
-  }
-};
-
-// 주소 변경시 router가 실행됨.
-window.addEventListener('hashchange', router);
-// 새로고침을 하면 DOMContentLoaded 이벤트가 발생하고
-// render 함수는 url의 hash를 취득해 새로고침 직전에 렌더링되었던 페이지를 다시 렌더링한다.
-window.addEventListener('DOMContentLoaded', router);
-
 // yarn start 로 App.js 를 build 와 serve 명령을 수행.
 /* 
     01.30
+    ^ Component 인스턴스를 나눠서 사용해서 이벤트 관리와 상태관리 재렌더링 등을 사용할수 있게
+
     ^ 'state' 개념을 도입해서 상태 변경시 그부분만 렌더링 다시하도록
     ^ fetch 받아오기전 로딩 상태를 정의하고, 로딩 상태 렌더링과
       로딩 끝난후의 렌더링을 만들어보기

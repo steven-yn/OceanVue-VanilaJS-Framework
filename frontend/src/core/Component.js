@@ -1,5 +1,5 @@
 import Post from '../components/post/Post';
-import PostList from '../components/post/PostList';
+import PostListContainer from '../containers/PostListContainer';
 
 // 생성자 함수
 
@@ -12,17 +12,27 @@ const Component = (function () {
     if ($entry) {
       $root = $entry;
       _routes = initRoutes;
+      this.router(this);
     }
   }
 
-  Component.prototype.defineState = function (compState) {
-    //_state = compState;
-  };
+  Component.prototype.router = function (entryInstance) {
+    const router = function () {
+      const hashPath = window.location.hash.replace('#', '');
+      const uiComponent =
+        _routes.find((route) => route.path === hashPath).component || '';
 
-  Component.prototype.loadState = function () {};
+      entryInstance.render(uiComponent);
+      if (hashPath === '') {
+        entryInstance.getPostList();
+      }
+    };
 
-  Component.prototype.useState = function (initState) {
-    // const [state, setState] = useState();
+    // 주소 변경시 router가 실행됨.
+    window.addEventListener('hashchange', router);
+    // 새로고침을 하면 DOMContentLoaded 이벤트가 발생하고
+    // render 함수는 url의 hash를 취득해 새로고침 직전에 렌더링되었던 페이지를 다시 렌더링한다.
+    window.addEventListener('DOMContentLoaded', router);
   };
 
   Component.prototype.render = function (virtualDOM, $elem = $root) {
@@ -49,7 +59,7 @@ const Component = (function () {
     };
 
     const isDiffNode = (oldNode, newNode) => {
-      let test = updateElement(oldNode, newNode, $root);
+      let test = updateElement(oldNode, newNode, $elem);
 
       return test;
     };
@@ -126,7 +136,11 @@ const Component = (function () {
     isDiffNode(oldRealNode, newRealNode);
   };
 
-  Component.prototype.getPostId = async function () {
+  Component.prototype.componentDidMount = function (fn) {
+    return fn;
+  };
+
+  Component.prototype.getPostList = async function () {
     const res = await fetch(`http://localhost:5000/api/`).then((done = true));
     const body = await res.json();
     const idList = [];
@@ -140,7 +154,7 @@ const Component = (function () {
     const $PostListWrap = document.getElementById('PostListWrap');
 
     if (done) {
-      this.render(PostList(body, done), $PostListWrap);
+      this.render(PostListContainer(body, done), $PostListWrap);
     }
   };
 

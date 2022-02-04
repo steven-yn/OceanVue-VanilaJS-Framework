@@ -1,23 +1,16 @@
 /** @jsx h */
-import Component from '../../core/Component';
-
+// eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   if (Array.isArray(...children)) {
     const arrConv = Object.values(children[0]);
     children = arrConv;
   }
-  /*
-    const conv = arrChildren.map((vdom) => ({
-      type: vdom.type,
-      props: vdom.props,
-      children: vdom.children,
-    }));
-    console.log(conv);
-    //return { type, props, children };
-  }
-  */
 
   return { type, props, children };
+};
+
+export const Counter = (state = 0) => {
+  return <h4>{`${state}`}</h4>;
 };
 
 const PostListTop = () => {
@@ -26,7 +19,10 @@ const PostListTop = () => {
       <div id="top">
         <h1>게시판</h1>
         <div class="rightBox">
+          <div id="counterBox">{Counter()}</div>
           <button>새로고침</button>
+          <button class="increase">+1</button>
+          <button class="decrease">-1</button>
         </div>
       </div>
       <div id="topMenu">
@@ -52,16 +48,21 @@ const PostListTop = () => {
   );
 };
 
-export const PostItem = ({ postId, title, author, wrDate }) => {
-  //console.log(postId);
+export const PostItem = (item) => {
+  const { postId, title, author, wrDate } = item;
   return (
-    <div>
+    <div id="PostItem">
       <h3>
-        <a href={'#' + postId}>{title}</a>
+        <a href={'#' + postId}>
+          <span>{`${postId}.`}</span>
+          {title}
+        </a>
       </h3>
       <div>
-        {author}
-        {wrDate}
+        <p>
+          {author}
+          <span>{wrDate}</span>
+        </p>
       </div>
     </div>
   );
@@ -76,7 +77,7 @@ const PostList = (itemList, done) => {
     );
 
   return (
-    <div id="PostListBlock" class="common">
+    <div>
       {PostListTop()}
       <div id="PostItemBlock">{posts}</div>
       <div id="ButtonWrap">
