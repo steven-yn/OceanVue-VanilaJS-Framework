@@ -13,7 +13,7 @@ const initialState = {
 };
 
 // reducer를 정의하여 store에 넘겨준다.
-export default function reducer(state = initialState, action = {}) {
+export default function counterModule(state = initialState, action = {}) {
   switch (action.type) {
     case INCREASE:
       return {

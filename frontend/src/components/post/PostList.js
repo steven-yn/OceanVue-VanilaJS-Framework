@@ -18,6 +18,10 @@ const PostListTop = () => {
     <div id="PostListTop">
       <div id="top">
         <h1>게시판</h1>
+        <form>
+          <input type="search" name="postsearch" />
+          <input type="button" name="search" value="검색" />
+        </form>
         <div class="rightBox">
           <div id="counterBox">{Counter()}</div>
           <button>새로고침</button>

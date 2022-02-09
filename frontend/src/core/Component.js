@@ -1,4 +1,3 @@
-import Post from '../components/post/Post';
 import PostListContainer from '../containers/PostListContainer';
 
 // 생성자 함수
@@ -7,24 +6,50 @@ const Component = (function () {
   let $root = {};
   let _routes = []; // (바깥에서 참조 불가, App 의 routes에 저장이 된다.)
   let done = false;
+  let evented = false;
 
   function Component($entry, initRoutes) {
     if ($entry) {
       $root = $entry;
       _routes = initRoutes;
+      this.mounted = false;
       this.router(this);
     }
   }
 
+  // hash 방식의 라우터 메서드
   Component.prototype.router = function (entryInstance) {
     const router = function () {
       const hashPath = window.location.hash.replace('#', '');
-      const uiComponent =
-        _routes.find((route) => route.path === hashPath).component || '';
+      const isNum = Number(hashPath);
 
-      entryInstance.render(uiComponent);
-      if (hashPath === '') {
-        entryInstance.getPostList();
+      if (isNum) {
+        const uiComponent = _routes.find(
+          (route) => route.path === ':postId',
+        ).component;
+
+        const result = entryInstance.render(uiComponent());
+
+        console.log('현재페이지 : ', isNum);
+
+        if (result) {
+          entryInstance.compDidMount(uiComponent);
+        }
+      } else {
+        const uiComponent =
+          _routes.find((route) => route.path === hashPath).component || '';
+
+        const result = entryInstance.render(uiComponent());
+
+        if (hashPath === '') {
+          entryInstance.getPostList();
+        }
+
+        console.log('현재페이지 : ', hashPath);
+
+        if (result) {
+          entryInstance.compDidMount(uiComponent);
+        }
       }
     };
 
@@ -35,8 +60,12 @@ const Component = (function () {
     window.addEventListener('DOMContentLoaded', router);
   };
 
+  Component.prototype.compDidMount = function (fn) {
+    return fn();
+  };
+
   Component.prototype.render = function (virtualDOM, $elem = $root) {
-    console.log('render 실행');
+    //console.log('render 실행');
     const oldRealNode = $elem.firstElementChild;
 
     const createRealNode = (virtualDOM) => {
@@ -127,28 +156,76 @@ const Component = (function () {
       }
     }
 
-    console.log(oldRealNode);
+    //console.log(oldRealNode);
 
     let newRealNode = createRealNode(virtualDOM);
 
-    console.log(newRealNode);
+    //console.log(newRealNode);
 
     isDiffNode(oldRealNode, newRealNode);
+
+    console.log('렌더링 완료!');
+    return (this.mounted = true);
+  };
+  /*
+  const test = {
+  writeEditorBlock: '#writeEditorBlock',
+  titleinput: '#titleInput',
+  authorInput: '#authorInput',
+  editorInput: '#editorInput',
+};
+
+  Component.prototype.setQuery = function (query) {
+    beforeMount = query;
   };
 
-  Component.prototype.componentDidMount = function (fn) {
-    return fn;
+  Component.prototype.getElem = function (beforeMount) {
+    const arr = Object.entries(beforeMount);
+
+    for (let i = 0; i < arr.length; i++) {
+      arr[i][1] = document.querySelector(arr[i][1]);
+    }
+
+    const conv = Object.fromEntries(arr);
+    this.this.afterMountElem = conv;
+  };
+*/
+
+  // useEffect 와 비슷한 기능의 메서드
+  Component.prototype.oceanEffect = function (
+    fn,
+    $elemOnCh = $root,
+    $elemOnUn,
+  ) {
+    // [] 를 인자로 받으면 root 아래 elem 이 render 된 후
+    // $elem 를 인자로 받으면 target elem 이 render 된 후
+    /*
+    if ($elemOnUn) {
+      if (evented) {
+        return;
+      } else {
+        window.addEventListener('hashchange', fn());
+        evented = true;
+      }
+    }
+*/
+    if (!$elemOnCh) {
+      return;
+    } else if ($elemOnCh === $root) {
+      if (!$root.firstElementChild) {
+        return;
+      } else {
+        $root.firstChild.addEventListener('change', fn());
+      }
+    } else {
+      $elemOnCh.addEventListener('change', fn());
+    }
   };
 
   Component.prototype.getPostList = async function () {
     const res = await fetch(`http://localhost:5000/api/`).then((done = true));
     const body = await res.json();
-    const idList = [];
-
-    await body.forEach((item) => idList.push(item.postId));
-
-    // postId 로 post routes 등록
-    this.dataRouting(idList);
+    const itemList = [];
 
     // PostList 에 Props 전달
     const $PostListWrap = document.getElementById('PostListWrap');
@@ -156,27 +233,10 @@ const Component = (function () {
     if (done) {
       this.render(PostListContainer(body, done), $PostListWrap);
     }
+
+    await body.forEach((item) => itemList.push(item));
   };
 
-  Component.prototype.dataRouting = function (idList) {
-    //
-
-    const postRoute = idList.map((id) => ({
-      path: `${id}`,
-      component: Post(id),
-    }));
-
-    postRoute.forEach((route) => _routes.push(route));
-
-    /*
-      const routes = [
-        { path: '', component: App() },
-        { path: 'write', component: Write() },
-        { path: ...postId, component: Post(...postId) }
-        { ... }
-      ];
-    */
-  };
   return Component;
 })();
 

@@ -1,4 +1,4 @@
-#writerBlock {
+#writeEditorBlock {
   padding-top: 5rem;
   padding-bottom: 5rem;
 }
@@ -9,11 +9,11 @@
   padding-bottom: 0.5rem;
   border: none;
   border-bottom: 1px solid;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
-#editor {
+#editorInput {
   font-size: 14px;
   outline: none;
   padding-bottom: 0.5rem;
@@ -22,4 +22,14 @@
   margin-bottom: 2rem;
   width: 100%;
   height: 10rem;
+}
+
+#authorInput {
+  outline: none;
+  padding-bottom: 0.5rem;
+  border: none;
+  border-bottom: 1px solid;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  height: 2rem;
 }

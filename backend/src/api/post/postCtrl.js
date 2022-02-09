@@ -34,16 +34,16 @@ const postData = getData();
 
 export const Create = (req, res) => {
   // 클라이언트의 req body
-  const { title, content, author } = req.body;
+  const { title, author, body } = req.body;
   const dateNow = new Date();
 
   // postId 에 들어갈 let 카운터
   // postId 1씩 증가카운팅, 작성할때 현재한국시간으로 작성일 기입
 
   let postNum = lastPostId() + 1;
-  const post = { postId: postNum, title, content, author, wrDate: dateNow };
+  const post = { postId: postNum, title, body, author, wrDate: dateNow };
 
-  // 배열 마지막에 요청받은 title, content, author 와
+  // 배열 마지막에 요청받은 title, body, author 와
   // 카운팅된 postId, 현재시각인 wrDate 가 추가.
   postData.push(post);
 

@@ -9,6 +9,8 @@ const h = (type, props, ...children) => {
   return { type, props, children };
 };
 
+const compPostList = new Component();
+
 const PostListContainer = (itemList, done) => {
   const $elem = {
     counterBox: document.querySelector('#counterBox'),
@@ -21,7 +23,7 @@ const PostListContainer = (itemList, done) => {
     compPostList.render(Counter(state.number), $elem.counterBox);
   };
 
-  const effect = () => {
+  compPostList.oceanEffect(() => {
     const countEvent = () => {
       $elem.btnIncrease.onclick = () => {
         counterStore.dispatch(PLM.increase());
@@ -33,11 +35,7 @@ const PostListContainer = (itemList, done) => {
 
     counterStore.subscribe(count);
     countEvent();
-  };
-
-  if ($elem.counterBox) {
-    compPostList.componentDidMount(effect());
-  }
+  }, $elem.counterBox);
 
   return (
     <div id="PostListBlock" class="common">
@@ -47,5 +45,3 @@ const PostListContainer = (itemList, done) => {
 };
 
 export default PostListContainer;
-
-const compPostList = new Component();

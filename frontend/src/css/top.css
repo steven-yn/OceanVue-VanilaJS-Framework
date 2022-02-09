@@ -1,17 +1,35 @@
-#top {
+#PostListTop #top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-#top h1 {
+#PostListTop #top h1 {
   font-size: 2rem;
   font-weight: bold;
   line-height: 1.5;
   margin: 0;
 }
 
-#top button {
+#PostListTop #top button {
+  height: fit-content;
+}
+
+#PostTop #posttop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+#PostTop h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#PostTop #top button {
   height: fit-content;
 }

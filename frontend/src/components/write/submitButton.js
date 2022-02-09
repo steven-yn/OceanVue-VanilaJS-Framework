@@ -1,5 +1,6 @@
 /** @jsx h */
 
+// eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   return { type, props, children };
 };
@@ -7,7 +8,7 @@ const h = (type, props, ...children) => {
 const submitButton = () => {
   return (
     <div id="submitButtonBlock">
-      <button>작성</button>
+      <button id="submitButton">작성</button>
     </div>
   );
 };
