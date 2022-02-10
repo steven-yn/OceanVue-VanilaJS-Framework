@@ -1,15 +1,19 @@
 // dispatch에서 사용될 type들을 정의해준다.
 const INCREASE = 'INCREASE';
 const DECREASE = 'DECREASE';
+const CHANGE_FIELD = 'write/CHANGE_FIELD'; // 특정 key 값 바꾸기
 
 // reducer에서 사용될 action을 정의해준다.
 export const increase = () => ({ type: INCREASE });
 export const decrease = () => ({ type: DECREASE });
+export const changeField = ({ value }) => ({
+  type: CHANGE_FIELD,
+  value,
+});
 
 // 초기 state의 값을 정의해준다.
 const initialState = {
-  diff: 1,
-  number: 0,
+  value: null,
 };
 
 // reducer를 정의하여 store에 넘겨준다.
@@ -24,6 +28,11 @@ export default function counterModule(state = initialState, action = {}) {
       return {
         ...state,
         number: state.number - state.diff,
+      };
+    case CHANGE_FIELD:
+      return {
+        ...state,
+        value: action.value,
       };
 
     default:

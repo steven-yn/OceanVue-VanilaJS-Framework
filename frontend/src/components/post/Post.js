@@ -9,16 +9,24 @@ const PostTop = (post) => {
   const { postId, title, author, wrDate } = post;
   return (
     <div>
-      <div id="posttop">
+      <div id="PostHeader">
         <h1>{title}</h1>
         <div class="rightBox">
-          <button>목록</button>
-          <button>수정</button>
-          <button>삭제</button>
+          <button id="listmoveButton">
+            <a href="#">목록</a>
+          </button>
+          <button id="updateButton">
+            <a href="#update">수정</a>
+          </button>
+          <button id="deleteButton">
+            <a href="#">삭제</a>
+          </button>
         </div>
       </div>
       <div id="PostHead">
-        {`${postId}`} {author} {wrDate}
+        포스트 번호 : {`${postId}`} <br />
+        작성자 : {author} <br />
+        작성일 : {wrDate}
       </div>
     </div>
   );

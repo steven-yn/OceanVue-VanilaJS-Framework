@@ -18,18 +18,20 @@ const PostListTop = () => {
     <div id="PostListTop">
       <div id="top">
         <h1>게시판</h1>
-        <form>
-          <input type="search" name="postsearch" />
-          <input type="button" name="search" value="검색" />
-        </form>
+        <div id="searchBlock">
+          <input
+            id="searchBar"
+            type="search"
+            name="postsearch"
+            placeholder="검색할 내용을 입력해주세요,,,"
+          />
+          <button id="searchButton">검색</button>
+        </div>
         <div class="rightBox">
-          <div id="counterBox">{Counter()}</div>
           <button>새로고침</button>
-          <button class="increase">+1</button>
-          <button class="decrease">-1</button>
         </div>
       </div>
-      <div id="topMenu">
+      <div id="PostListTopMenu">
         <form id="publishDate">
           <select name="publishDate">
             <option value="none">작성일</option>

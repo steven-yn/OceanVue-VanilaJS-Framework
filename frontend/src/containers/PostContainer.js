@@ -16,19 +16,11 @@ const PostContainer = () => {
   console.log('post컨테이너 실행');
   const $elem = {
     PostWrap: document.querySelector('#PostWrap'),
+    deleteButton: document.querySelector('#deleteButton'),
   };
 
   const dispatch = postStore.dispatch;
-
   const hashPath = Number(window.location.hash.replace('#', ''));
-
-  const onLoad = () => {
-    const state = postStore.getState();
-    if (state.post) {
-      console.log(state.post);
-      compPost.render(Post(state.post, true), $elem.PostWrap);
-    }
-  };
 
   async function getPost(postId) {
     const res = await fetch(`http://localhost:5000/api/${postId}`);
@@ -36,6 +28,29 @@ const PostContainer = () => {
 
     return dispatch(readPost(body));
   }
+
+  async function deletePost(postId) {
+    const res = await fetch(`http://localhost:5000/api/${postId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  const onDelete = (target) => {
+    target.onclick = () => {
+      deletePost(hashPath);
+    };
+  };
+
+  const onLoad = () => {
+    const state = postStore.getState();
+    if (state.post) {
+      console.log(state.post);
+      compPost.render(Post(state.post, true), $elem.PostWrap);
+
+      $elem.deleteButton = document.querySelector('#deleteButton');
+      onDelete($elem.deleteButton);
+    }
+  };
 
   compPost.oceanEffect(() => {
     getPost(hashPath);

@@ -7,7 +7,20 @@ import * as WM from '../modules/writeModule';
 const h = (type, props, ...children) => {
   return { type, props, children };
 };
-
+/*
+    if (postId) {
+      dispatch(WM.updatePost({ title, author, body, postId: postId }));
+      return;
+    }*/
+/*
+  const onChangeField = (payload) => {
+    if (!payload) {
+      return;
+    } else {
+      dispatch(WM.changeField(payload));
+    }
+  };
+*/
 const SubmitButtonContainer = (Instance) => {
   const $elem = {
     submitButtonBlock: document.querySelector('#submitButtonBlock'),
@@ -15,10 +28,13 @@ const SubmitButtonContainer = (Instance) => {
   };
 
   const dispatch = editorStore.dispatch;
+  const hashPath = window.location.hash.replace('#', '');
 
-  const onPublish = (payload, post) => {
+  const onPublish = (payload) => {
     if (!payload) {
       return;
+    } else if (hashPath === 'update') {
+      dispatch(WM.updatePost(payload));
     } else {
       const { title, author, body } = payload;
       dispatch(
@@ -29,27 +45,12 @@ const SubmitButtonContainer = (Instance) => {
         }),
       );
     }
-
-    /*
-    if (postId) {
-      dispatch(WM.updatePost({ title, author, body, postId: postId }));
-      return;
-    }*/
   };
 
-  /*
-  const onChangeField = (payload) => {
-    if (!payload) {
-      return;
-    } else {
-      dispatch(WM.changeField(payload));
-    }
-  };
-*/
   Instance.oceanEffect(() => {
     const clickEvent = () => {
       const state = editorStore.getState();
-
+      //console.log(state, 'editor 스테이트');
       $elem.submitButton.onclick = () => {
         const _state = editorStore.getState();
         onPublish(_state);
@@ -57,10 +58,18 @@ const SubmitButtonContainer = (Instance) => {
       };
 
       if (state.post) {
-        try {
-          postWrite(state.post);
-        } catch (error) {
-          console.error(error);
+        if (hashPath === 'update') {
+          try {
+            postUpdate(state.post);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          try {
+            postWrite(state.post);
+          } catch (error) {
+            console.error(error);
+          }
         }
       }
     };
@@ -72,9 +81,25 @@ const SubmitButtonContainer = (Instance) => {
         body: JSON.stringify(post),
       });
 
-      const req = await res.body;
+      const body = await res.json();
+      //console.log(body, '리스폰스 바디');
 
-      console.log(res, req);
+      if (body) {
+        const postId = body[body.length - 1].postId;
+        return (location.href = `#${postId}`);
+      }
+    }
+
+    async function postUpdate(post) {
+      const res = await fetch(`http://localhost:5000/api/${post.postId}`, {
+        method: 'PATCH',
+        headers: { 'content-Type': 'application/json' },
+        body: JSON.stringify(post),
+      });
+
+      //console.log(res.body);
+
+      location.href = `#${post.postId}`;
     }
 
     editorStore.subscribe(onPublish);

@@ -1,5 +1,5 @@
 import PostList, { Counter } from '../components/post/PostList';
-import { counterStore } from '../modules';
+import { postListStore } from '../modules';
 import * as PLM from '../modules/PostListModule';
 import Component from '../core/Component';
 
@@ -13,29 +13,43 @@ const compPostList = new Component();
 
 const PostListContainer = (itemList, done) => {
   const $elem = {
-    counterBox: document.querySelector('#counterBox'),
-    btnIncrease: document.querySelector('.increase'),
-    btnDecrease: document.querySelector('.decrease'),
+    PostListBlock: document.querySelector('#PostListBlock'),
+    searchBar: document.querySelector('#searchBar'),
+    searchButton: document.querySelector('#searchButton'),
   };
 
-  const count = () => {
-    const state = counterStore.getState(); // 현재 상태를 불러옴.
-    compPostList.render(Counter(state.number), $elem.counterBox);
+  const dispatch = postListStore.dispatch;
+  const state = postListStore.getState();
+
+  const onChangeField = (value) => {
+    if (!value) {
+      return;
+    } else {
+      dispatch(PLM.changeField(value));
+    }
+  };
+
+  const onSetState = () => {
+    switch (state) {
+      case state.value:
+        return {
+          state,
+        };
+      default:
+        return state;
+    }
   };
 
   compPostList.oceanEffect(() => {
-    const countEvent = () => {
-      $elem.btnIncrease.onclick = () => {
-        counterStore.dispatch(PLM.increase());
-      };
-      $elem.btnDecrease.onclick = () => {
-        counterStore.dispatch(PLM.decrease());
+    const changeEvent = () => {
+      $elem.searchBar.onchange = (e) => {
+        onChangeField({ value: e.target.value });
       };
     };
 
-    counterStore.subscribe(count);
-    countEvent();
-  }, $elem.counterBox);
+    postListStore.subscribe(onSetState);
+    changeEvent();
+  }, $elem.PostListBlock);
 
   return (
     <div id="PostListBlock" class="common">

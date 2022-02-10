@@ -27,6 +27,7 @@ const routes = [
   { path: '', component: App },
   { path: 'write', component: WriteEditorContainer },
   { path: ':postId', component: PostContainer },
+  { path: 'update', component: WriteEditorContainer },
   // { ... }
 ];
 
@@ -34,15 +35,15 @@ const entry = new Component($entry, routes);
 
 // yarn start 로 App.js 를 build 와 serve 명령을 수행.
 /* 
-    02.05
-    ^ 가상돔 렌더링 과정을 정리하고 core 형태로 만들기
+    02.10
+    app : 404 페이지 
+    postList : 검색기능 오르내림차순 작성자기준 초기화버튼 페이지네이션 갯수선택 캐시갱신
+    post : 404 페이지
 
-    ^ 이벤트 관리 최적화
-    ^ Redux 의 구조와 키워드를 그대로사용하고 store, subscribe, Observer Pattern 내가 만들어보기
-    
-    이후 해야할것 (순서대로)
-
-    ^XHR 관련 구현 : write, post
-    --API 캐싱
-    --테스트 코드
+    ^ 불필요한 이벤트 제거
+    ^ 이벤트 위임
+    ^ fetch 로딩 실패 ui 처리
+    ^ GET 메소드 경우 캐싱, 재요청 X
+    ^ POST DELETE PUT 캐싱된 데이터 갱신 
+    -- 테스트 코드
 */

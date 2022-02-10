@@ -43,3 +43,12 @@
   justify-content: flex-end;
   margin-bottom: 3rem;
 }
+
+#searchBar {
+  width: 15rem;
+  height: 2rem;
+}
+
+#searchButton {
+  margin-left: 1rem;
+}

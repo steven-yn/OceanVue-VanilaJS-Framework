@@ -8,8 +8,8 @@ const rootReducer = {
   counterModule,
 };
 */
-export const counterStore = createStore(counterModule);
-counterStore.dispatch(); // redux에서 초기 데이터를 설정하기 위한 요청
+export const postListStore = createStore(counterModule);
+postListStore.dispatch(); // redux에서 초기 데이터를 설정하기 위한 요청
 
 export const editorStore = createStore(editorModule);
 

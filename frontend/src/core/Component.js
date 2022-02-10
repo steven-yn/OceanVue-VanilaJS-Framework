@@ -23,6 +23,8 @@ const Component = (function () {
       const hashPath = window.location.hash.replace('#', '');
       const isNum = Number(hashPath);
 
+      console.log(isNum);
+
       if (isNum) {
         const uiComponent = _routes.find(
           (route) => route.path === ':postId',
@@ -45,7 +47,7 @@ const Component = (function () {
           entryInstance.getPostList();
         }
 
-        console.log('현재페이지 : ', hashPath);
+        console.log('현재페이지 : ', hashPath ? hashPath : '메인');
 
         if (result) {
           entryInstance.compDidMount(uiComponent);
@@ -223,15 +225,15 @@ const Component = (function () {
   };
 
   Component.prototype.getPostList = async function () {
-    const res = await fetch(`http://localhost:5000/api/`).then((done = true));
+    const res = await fetch(`http://localhost:5000/api/`);
     const body = await res.json();
     const itemList = [];
 
     // PostList 에 Props 전달
     const $PostListWrap = document.getElementById('PostListWrap');
 
-    if (done) {
-      this.render(PostListContainer(body, done), $PostListWrap);
+    if (body) {
+      this.render(PostListContainer(body, res.ok), $PostListWrap);
     }
 
     await body.forEach((item) => itemList.push(item));

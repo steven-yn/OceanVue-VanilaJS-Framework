@@ -3,12 +3,15 @@ import WriteEditor from '../components/write/WriteEditor';
 import Component from '../core/Component';
 import { editorStore } from '../modules';
 import * as WM from '../modules/writeModule';
+import { postStore } from '../modules';
 
 /** @jsx h */
 // eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   return { type, props, children };
 };
+
+const compWrite = new Component();
 
 const WriteEditorContainer = () => {
   const $elem = {
@@ -22,6 +25,13 @@ const WriteEditorContainer = () => {
 
   const dispatch = editorStore.dispatch;
   const mount = WM.initialize;
+  const hashPath = window.location.hash.replace('#', '');
+
+  const onFix = () => {
+    const state = postStore.getState();
+
+    return state.post;
+  };
 
   const onChangeField = (payload) => {
     if (!payload) {
@@ -31,9 +41,22 @@ const WriteEditorContainer = () => {
     }
   };
 
-  dispatch(mount);
+  //dispatch(mount);
 
   compWrite.oceanEffect(() => {
+    if (hashPath === 'update') {
+      let post = onFix();
+      if (post) {
+        dispatch(WM.setOriginalPost(post));
+      }
+      const state = editorStore.getState();
+      $elem.titleinput.value = state.title;
+      $elem.authorInput.value = state.author;
+      $elem.editorInput.value = state.body;
+    } else if (hashPath === 'write') {
+      dispatch(mount);
+    }
+
     const changeEvent = () => {
       $elem.titleinput.onchange = (e) => {
         onChangeField({ key: 'title', value: e.target.value });
@@ -62,5 +85,3 @@ const WriteEditorContainer = () => {
 };
 
 export default WriteEditorContainer;
-
-const compWrite = new Component();

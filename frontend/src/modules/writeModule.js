@@ -27,7 +27,7 @@ const initialState = {
   author: '',
   body: '',
   post: null,
-  originalPostId: null,
+  postId: null,
 };
 
 export default function editorModule(state = initialState, action = {}) {
@@ -52,7 +52,7 @@ export default function editorModule(state = initialState, action = {}) {
         title: action.post.title,
         author: action.post.author,
         body: action.post.body,
-        originalPostId: action.post.postId,
+        postId: action.post.postId,
       };
     case UPDATE_POST:
       return {
