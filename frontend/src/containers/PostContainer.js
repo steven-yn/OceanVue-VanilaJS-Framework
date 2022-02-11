@@ -20,6 +20,10 @@ const PostContainer = () => {
   };
 
   const dispatch = postStore.dispatch;
+  const getState = () => {
+    return postStore.getState();
+  };
+  let setState = {};
   const hashPath = Number(window.location.hash.replace('#', ''));
 
   async function getPost(postId) {
@@ -42,10 +46,9 @@ const PostContainer = () => {
   };
 
   const onLoad = () => {
-    const state = postStore.getState();
-    if (state.post) {
-      console.log(state.post);
-      compPost.render(Post(state.post, true), $elem.PostWrap);
+    if (getState().post) {
+      setState = getState();
+      compPost.render(Post(setState.post, true), $elem.PostWrap);
 
       $elem.deleteButton = document.querySelector('#deleteButton');
       onDelete($elem.deleteButton);

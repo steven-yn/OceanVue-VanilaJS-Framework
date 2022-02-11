@@ -1,5 +1,5 @@
 import { createStore } from '../core/Store';
-import counterModule from './PostListModule';
+import postListModule from './PostListModule';
 import postModule from './PostModule';
 import editorModule from './writeModule';
 /*
@@ -8,8 +8,7 @@ const rootReducer = {
   counterModule,
 };
 */
-export const postListStore = createStore(counterModule);
-postListStore.dispatch(); // redux에서 초기 데이터를 설정하기 위한 요청
+export const postListStore = createStore(postListModule);
 
 export const editorStore = createStore(editorModule);
 

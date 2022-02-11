@@ -1,4 +1,5 @@
 import PostListContainer from '../containers/PostListContainer';
+import { clickEvent } from '../containers/PostListContainer';
 
 // 생성자 함수
 
@@ -23,7 +24,7 @@ const Component = (function () {
       const hashPath = window.location.hash.replace('#', '');
       const isNum = Number(hashPath);
 
-      console.log(isNum);
+      //console.log(isNum);
 
       if (isNum) {
         const uiComponent = _routes.find(
@@ -32,7 +33,7 @@ const Component = (function () {
 
         const result = entryInstance.render(uiComponent());
 
-        console.log('현재페이지 : ', isNum);
+        //console.log('현재페이지 : ', isNum);
 
         if (result) {
           entryInstance.compDidMount(uiComponent);
@@ -47,7 +48,7 @@ const Component = (function () {
           entryInstance.getPostList();
         }
 
-        console.log('현재페이지 : ', hashPath ? hashPath : '메인');
+        //console.log('현재페이지 : ', hashPath ? hashPath : '메인');
 
         if (result) {
           entryInstance.compDidMount(uiComponent);
@@ -166,7 +167,7 @@ const Component = (function () {
 
     isDiffNode(oldRealNode, newRealNode);
 
-    console.log('렌더링 완료!');
+    //console.log('렌더링 완료!');
     return (this.mounted = true);
   };
   /*
@@ -234,6 +235,7 @@ const Component = (function () {
 
     if (body) {
       this.render(PostListContainer(body, res.ok), $PostListWrap);
+      this.compDidMount(clickEvent);
     }
 
     await body.forEach((item) => itemList.push(item));

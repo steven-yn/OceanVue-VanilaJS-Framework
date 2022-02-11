@@ -38,12 +38,6 @@
   background-color: white;
 }
 
-#ButtonWrap {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 3rem;
-}
-
 #searchBar {
   width: 15rem;
   height: 2rem;
@@ -51,4 +45,15 @@
 
 #searchButton {
   margin-left: 1rem;
+}
+
+.authorTag:hover {
+  cursor: pointer;
+}
+
+#pageBtnWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
 }

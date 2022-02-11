@@ -26,11 +26,15 @@ const WriteEditorContainer = () => {
   const dispatch = editorStore.dispatch;
   const mount = WM.initialize;
   const hashPath = window.location.hash.replace('#', '');
+  const getState = () => {
+    return postStore.getState();
+  };
+  let setState = {};
 
   const onFix = () => {
-    const state = postStore.getState();
+    setState = getState();
 
-    return state.post;
+    return setState.post;
   };
 
   const onChangeField = (payload) => {
@@ -41,18 +45,16 @@ const WriteEditorContainer = () => {
     }
   };
 
-  //dispatch(mount);
-
   compWrite.oceanEffect(() => {
     if (hashPath === 'update') {
-      let post = onFix();
-      if (post) {
-        dispatch(WM.setOriginalPost(post));
+      if (onFix()) {
+        dispatch(WM.setOriginalPost(onFix()));
       }
-      const state = editorStore.getState();
-      $elem.titleinput.value = state.title;
-      $elem.authorInput.value = state.author;
-      $elem.editorInput.value = state.body;
+      setState = getState();
+      console.log(setState);
+      $elem.titleinput.value = setState.post.title;
+      $elem.authorInput.value = setState.post.author;
+      $elem.editorInput.value = setState.post.body;
     } else if (hashPath === 'write') {
       dispatch(mount);
     }
