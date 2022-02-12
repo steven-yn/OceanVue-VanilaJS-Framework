@@ -1,4 +1,4 @@
-import PostList, { PageNum } from '../components/post/PostList';
+import PostList from '../components/post/PostList';
 import { postListStore } from '../modules';
 import * as PLM from '../modules/PostListModule';
 import Component from '../core/Component';
@@ -28,7 +28,7 @@ export const clickEvent = () => {
       dispatch(PLM.authorSelect({ value: elem.firstChild.data }));
       setState = getState();
 
-      console.log(setState.postList);
+      //console.log(setState.postList);
 
       compPostList.render(
         PostList(setState.postList, true, setState),
@@ -72,7 +72,24 @@ const PostListContainer = (itemList, done) => {
 
   // 마운트 될때 전달받은 itemList를 store에서 불러옴
   const onLoad = () => {
-    dispatch(PLM.readPostList(itemList));
+    if (!itemList) {
+      setState = getState();
+      //console.log('onLoad 때 상태', setState);
+
+      dispatch(PLM.readPostList(setState.postList));
+      compPostList.render(
+        PostList(setState.postList, true, setState),
+        $elem.PostListBlock,
+      );
+    } else {
+      setState = getState();
+      //console.log(itemList, 'onLoad 때 itemList');
+      dispatch(PLM.readPostList(itemList));
+      compPostList.render(
+        PostList(itemList, true, setState),
+        $elem.PostListBlock,
+      );
+    }
   };
 
   compPostList.oceanEffect(() => {
@@ -81,17 +98,28 @@ const PostListContainer = (itemList, done) => {
         onChangeField({ value: e.target.value });
 
         setState = getState();
-        PostList(itemList, true, setState);
+        if (!itemList) {
+          PostList(setState.postList, true, setState);
+        } else {
+          PostList(itemList, true, setState);
+        }
       };
     };
 
     const searchEvent = () => {
       $elem.searchButton.onclick = () => {
         setState = getState();
-        compPostList.render(
-          PostList(itemList, true, setState),
-          $elem.PostListBlock,
-        );
+        if (!itemList) {
+          compPostList.render(
+            PostList(setState.postList, true, setState),
+            $elem.PostListBlock,
+          );
+        } else {
+          compPostList.render(
+            PostList(itemList, true, setState),
+            $elem.PostListBlock,
+          );
+        }
       };
     };
 
@@ -104,10 +132,17 @@ const PostListContainer = (itemList, done) => {
 
         setState = getState();
 
-        compPostList.render(
-          PostList(itemList, true, setState),
-          $elem.PostListBlock,
-        );
+        if (!itemList) {
+          compPostList.render(
+            PostList(setState.postList, true, setState),
+            $elem.PostListBlock,
+          );
+        } else {
+          compPostList.render(
+            PostList(itemList, true, setState),
+            $elem.PostListBlock,
+          );
+        }
       };
     };
 
@@ -121,10 +156,17 @@ const PostListContainer = (itemList, done) => {
 
         setState = getState();
 
-        compPostList.render(
-          PostList(itemList, true, setState),
-          $elem.PostListBlock,
-        );
+        if (!itemList) {
+          compPostList.render(
+            PostList(setState.postList, true, setState),
+            $elem.PostListBlock,
+          );
+        } else {
+          compPostList.render(
+            PostList(itemList, true, setState),
+            $elem.PostListBlock,
+          );
+        }
       };
     };
 
@@ -136,10 +178,17 @@ const PostListContainer = (itemList, done) => {
           postListStore.dispatch(PLM.pageDecrease());
           setState = getState();
 
-          compPostList.render(
-            PostList(itemList, true, setState),
-            $elem.PostListBlock,
-          );
+          if (!itemList) {
+            compPostList.render(
+              PostList(setState.postList, true, setState),
+              $elem.PostListBlock,
+            );
+          } else {
+            compPostList.render(
+              PostList(itemList, true, setState),
+              $elem.PostListBlock,
+            );
+          }
         }
       };
 
@@ -151,31 +200,50 @@ const PostListContainer = (itemList, done) => {
           postListStore.dispatch(PLM.pageIncrease());
           setState = getState();
 
-          compPostList.render(
-            PostList(itemList, true, setState),
-            $elem.PostListBlock,
-          );
+          if (!itemList) {
+            compPostList.render(
+              PostList(setState.postList, true, setState),
+              $elem.PostListBlock,
+            );
+          } else {
+            compPostList.render(
+              PostList(itemList, true, setState),
+              $elem.PostListBlock,
+            );
+          }
         }
       };
     };
 
     const defaultEvent = () => {
       $elem.defaultButton.onclick = () => {
-        dispatch(PLM.refreshStore(itemList));
+        if (!itemList) {
+          dispatch(PLM.refreshStore(getState().postList));
+        } else {
+          dispatch(PLM.refreshStore(itemList));
+        }
 
         if (getState().postList) {
-          setState = getState();
-
           // 전부다 초기화
           dispatch(PLM.changeField('')); // 스토어 내 value 값 초기화
           $elem.searchBar.value = ''; // 검색바 비우기
           $elem.datedSelector.value = 'none'; // 셀렉터 초기화
           $elem.pagenateSelector.value = 'none'; // 셀렉터 초기화
 
-          compPostList.render(
-            PostList(setState.postList, true, setState),
-            $elem.PostListBlock,
-          );
+          //console.log(itemList, 'default 내의 itemList');
+          //console.log(getState(), 'default 내의 getState');
+
+          if (!itemList) {
+            compPostList.render(
+              PostList(getState().postList, true, getState()),
+              $elem.PostListBlock,
+            );
+          } else {
+            compPostList.render(
+              PostList(itemList, true, getState()),
+              $elem.PostListBlock,
+            );
+          }
         } else {
           return;
         }
@@ -185,10 +253,13 @@ const PostListContainer = (itemList, done) => {
     const refreshEvent = () => {
       $elem.refreshButton.onclick = () => {
         compPostList.getPostList();
-        dispatch(PLM.refreshStore(itemList));
+        setState = getState();
+        if (!itemList) {
+          dispatch(PLM.refreshStore(setState.postList));
+        } else {
+          dispatch(PLM.refreshStore(itemList));
+        }
       };
-
-      setState = getState();
     };
 
     onLoad();
@@ -203,11 +274,19 @@ const PostListContainer = (itemList, done) => {
     pageEvent();
   }, $elem.PostListBlock);
 
-  return (
-    <div id="PostListBlock" class="common">
-      {PostList(itemList, done, setState)}
-    </div>
-  );
+  if (!itemList) {
+    return (
+      <div id="PostListBlock" class="common">
+        {PostList(setState.postList, done, setState)}
+      </div>
+    );
+  } else {
+    return (
+      <div id="PostListBlock" class="common">
+        {PostList(itemList, done, setState)}
+      </div>
+    );
+  }
 };
 
 export default PostListContainer;

@@ -15,6 +15,7 @@ const compWrite = new Component();
 
 const WriteEditorContainer = () => {
   const $elem = {
+    writeEditorWrap: document.querySelector('#writeEditorWrap'),
     writeEditorBlock: document.querySelector('#writeEditorBlock'),
     titleinput: document.querySelector('#titleInput'),
     authorInput: document.querySelector('#authorInput'),
@@ -75,7 +76,7 @@ const WriteEditorContainer = () => {
 
     editorStore.subscribe(onChangeField);
     changeEvent();
-  }, $elem.writeEditorBlock);
+  }, $elem.writeEditorWrap);
 
   return (
     <div id="Wrap">

@@ -1,26 +1,14 @@
 import submitButton from '../components/write/submitButton';
 import { editorStore } from '../modules';
 import * as WM from '../modules/writeModule';
+import PostListContainer from './PostListContainer';
 
 /** @jsx h */
 // eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   return { type, props, children };
 };
-/*
-    if (postId) {
-      dispatch(WM.updatePost({ title, author, body, postId: postId }));
-      return;
-    }*/
-/*
-  const onChangeField = (payload) => {
-    if (!payload) {
-      return;
-    } else {
-      dispatch(WM.changeField(payload));
-    }
-  };
-*/
+
 const SubmitButtonContainer = (Instance) => {
   const $elem = {
     submitButtonBlock: document.querySelector('#submitButtonBlock'),
@@ -54,9 +42,8 @@ const SubmitButtonContainer = (Instance) => {
 
   Instance.oceanEffect(() => {
     const clickEvent = () => {
-      setState = getState();
-
       $elem.submitButton.onclick = () => {
+        setState = getState();
         onPublish(getState());
         if (setState) {
           if (hashPath === 'update') {
@@ -76,10 +63,13 @@ const SubmitButtonContainer = (Instance) => {
       });
 
       const body = await res.json();
-      console.log(body, '리스폰스 바디');
+      //console.log(body, '리스폰스 바디');
+      //console.log(state, 'write 할때 state');
 
-      if (body) {
-        return (location.href = `#${setState.postId}`);
+      if (res.ok) {
+        PostListContainer(body, res.ok);
+        const postId = body[body.length - 1].postId;
+        return (location.href = `#${postId}`);
       }
     }
 
@@ -90,9 +80,14 @@ const SubmitButtonContainer = (Instance) => {
         body: JSON.stringify(state),
       });
 
-      console.log(res.body);
+      const body = await res.json();
+      //console.log(body, '리스폰스 바디');
+      //console.log(state, 'write 할때 state');
 
-      return (location.href = `#${setState.postId}`);
+      if (res.ok) {
+        PostListContainer(body, res.ok);
+        return (location.href = `#${setState.postId}`);
+      }
     }
 
     editorStore.subscribe(onPublish);

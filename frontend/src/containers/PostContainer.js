@@ -14,6 +14,7 @@ const compPost = new Component();
 
 const PostContainer = () => {
   console.log('post컨테이너 실행');
+  //debugger;
   const $elem = {
     PostWrap: document.querySelector('#PostWrap'),
     deleteButton: document.querySelector('#deleteButton'),
