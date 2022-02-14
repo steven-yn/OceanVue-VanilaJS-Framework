@@ -567,7 +567,7 @@ const PostContainer = () => {
 
   async function getPost(postId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${postId}`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`);
 
       if (res.status === 404) {
         return location.href = '#error';
@@ -582,7 +582,7 @@ const PostContainer = () => {
 
   async function deletePost(postId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${postId}`, {
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`, {
         method: 'DELETE'
       });
 
@@ -981,7 +981,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postWrite(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`, {
           method: 'POST',
           headers: {
             'content-Type': 'application/json'
@@ -1004,7 +1004,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${state.postId}`, {
           method: 'PATCH',
           headers: {
             'content-Type': 'application/json'
@@ -1337,7 +1337,7 @@ const Component = function () {
 
   Component.prototype.getPostList = async function () {
     try {
-      const res = await fetch(`http://localhost:5000/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
       const body = await res.json();
 
       if (res.status === 404) {
@@ -1359,7 +1359,7 @@ const Component = function () {
 
   Component.prototype.refresh = async function () {
     try {
-      const res = await fetch(`http://localhost:5000/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
       const body = await res.json();
 
       if (res.status === 404) {
