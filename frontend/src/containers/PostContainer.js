@@ -2,7 +2,7 @@
 import Header from '../components/common/header';
 import Post from '../components/post/Post';
 import Component from '../core/Component';
-import { postStore } from '../modules';
+import { store } from '../modules';
 import { readPost } from '../modules/PostModule';
 
 // eslint-disable-next-line no-unused-vars
@@ -13,31 +13,47 @@ const h = (type, props, ...children) => {
 const compPost = new Component();
 
 const PostContainer = () => {
-  console.log('post컨테이너 실행');
-  //debugger;
   const $elem = {
     PostWrap: document.querySelector('#PostWrap'),
     deleteButton: document.querySelector('#deleteButton'),
   };
 
-  const dispatch = postStore.dispatch;
+  const dispatch = store.post.dispatch;
   const getState = () => {
-    return postStore.getState();
+    return store.post.getState();
   };
   let setState = {};
   const hashPath = Number(window.location.hash.replace('#', ''));
 
   async function getPost(postId) {
-    const res = await fetch(`http://localhost:5000/api/${postId}`);
-    const body = await res.json();
+    try {
+      const res = await fetch(`http://localhost:5000/api/${postId}`);
+      if (res.status === 404) {
+        return (location.href = '#error');
+      }
+      const body = await res.json();
 
-    return dispatch(readPost(body));
+      return dispatch(readPost(body));
+    } catch (error) {
+      return alert(error);
+    }
   }
 
   async function deletePost(postId) {
-    const res = await fetch(`http://localhost:5000/api/${postId}`, {
-      method: 'DELETE',
-    });
+    try {
+      const res = await fetch(`http://localhost:5000/api/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.status === 404) {
+        return (location.href = '#error');
+      }
+
+      compPost.refresh();
+      location.href = '#';
+    } catch (error) {
+      return alert(error);
+    }
   }
 
   const onDelete = (target) => {
@@ -58,7 +74,7 @@ const PostContainer = () => {
 
   compPost.oceanEffect(() => {
     getPost(hashPath);
-    postStore.subscribe(onLoad);
+    store.post.subscribe(onLoad);
   }, $elem.PostWrap);
 
   return (

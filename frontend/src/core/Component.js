@@ -39,20 +39,24 @@ const Component = (function () {
         entryInstance.render(uiComponent());
         entryInstance.compDidMount(uiComponent);
       } else {
-        const uiComponent =
-          _routes.find((route) => route.path === hashPath).component || '';
+        try {
+          const uiComponent =
+            _routes.find((route) => route.path === hashPath).component || '';
+          entryInstance.render(uiComponent());
 
-        entryInstance.render(uiComponent());
-
-        // PostList 컴포넌트가 실행될때, setBody에 값이 캐싱되어 있으면
-        // 컨테이너 컴포넌트로 배열을 전달한다.
-        if (hashPath === '') {
-          if (setBody.length > 0) {
-            PostListContainer(setBody, true);
+          // PostList 컴포넌트가 실행될때, setBody에 값이 캐싱되어 있으면
+          // 컨테이너 컴포넌트로 배열을 전달한다.
+          if (hashPath === '') {
+            if (setBody.length > 0) {
+              PostListContainer(setBody, true);
+            }
           }
-        }
 
-        entryInstance.compDidMount(uiComponent);
+          entryInstance.compDidMount(uiComponent);
+        } catch (error) {
+          console.error(error);
+          location.href = '#error';
+        }
       }
     };
 
@@ -63,7 +67,7 @@ const Component = (function () {
   };
 
   // render 된후 엘리먼트 취득이나 상태 처리등
-  // 반환 되는 JSX 엘리먼트들을 제외한 로직 실행을 위한 메서드
+  // 반환 되는 JSX 가상DOM을 제외한 로직 실행을 위한 메서드
   Component.prototype.compDidMount = function (fn) {
     return fn();
   };
@@ -91,43 +95,29 @@ const Component = (function () {
     };
 
     function updateElement(oldNode, newNode, parent = $root) {
-      // 1. oldNode만 있는 경우
       if (!newNode && oldNode) {
         return oldNode.remove();
       }
 
-      // 2. newNode만 있는 경우
       if (newNode && !oldNode) {
         return parent.appendChild(newNode);
       }
 
-      // 3. oldNode와 newNode 모두 text 타입일 경우
-      if (
-        // typeof가 아니라 instanceof로 직접 비교한다.
-        newNode instanceof Text &&
-        oldNode instanceof Text
-      ) {
-        // Text일 경우 nodeValue로 값 비교가 가능하다.
+      if (newNode instanceof Text && oldNode instanceof Text) {
         if (oldNode.nodeValue === newNode.nodeValue) return;
 
-        // nodeValue의 값을 변경해준다.
         oldNode.nodeValue = newNode.nodeValue;
         return;
       }
 
-      // 4. oldNode와 newNode의 태그 이름(type)이 다를 경우
       if (newNode.nodeName !== oldNode.nodeName) {
         const index = [...parent.childNodes].indexOf(oldNode);
 
         return oldNode.remove(), parent.appendChild(newNode, index); // undefined를 반환할 것이다.
       }
 
-      // 5. oldNode와 newNode의 태그 이름(type)이 같을 경우
-      // 가상돔(VirtualDOM)의 props를 넘기는게 아니기 때문에 oldNode와 newNode를 직접 넘긴다.
       updateAttributes(oldNode, newNode);
 
-      // 6. newNode와 oldNode의 모든 자식 태그를 순회하며 1 ~ 5의 내용을 반복한다.
-      // 일단 childNodes를 배열로 변환해야한다.
       const newChildren = [...newNode.childNodes];
       const oldChildren = [...oldNode.childNodes];
       const maxLength = Math.max(newChildren.length, oldChildren.length);
@@ -140,13 +130,11 @@ const Component = (function () {
       const oldProps = [...oldNode.attributes];
       const newProps = [...newNode.attributes];
 
-      // 달라지거나 추가된 Props를 반영
       for (const { name, value } of newProps) {
         if (value === oldNode.getAttribute(name)) continue;
         oldNode.setAttribute(name, value);
       }
 
-      // 없어진 props를 attribute에서 제거
       for (const { name } of oldProps) {
         if (newNode.getAttribute(name) !== undefined) continue;
         oldNode.removeAttribute(name);
@@ -199,32 +187,46 @@ const Component = (function () {
   };
 
   Component.prototype.getPostList = async function () {
-    const res = await fetch(`http://localhost:5000/api/`);
-    const body = await res.json();
+    try {
+      const res = await fetch(`http://localhost:5000/api/`);
+      const body = await res.json();
 
-    if (body) {
+      if (res.status === 404) {
+        return (location.href = '#error');
+      }
+
+      if (body) {
+        // PostList 에 Props 전달
+        PostListContainer(body, res.ok);
+
+        // 배열 스택에 저장
+        setBody = body;
+
+        // PostList가 재 렌더링 된후 엘리먼트가 있을때 add 이벤트
+        this.compDidMount(clickEvent);
+      }
+    } catch (error) {
+      return alert(error);
+    }
+  };
+
+  Component.prototype.refresh = async function () {
+    try {
+      const res = await fetch(`http://localhost:5000/api/`);
+      const body = await res.json();
+
+      if (res.status === 404) {
+        return (location.href = '#error');
+      }
+
       // PostList 에 Props 전달
       PostListContainer(body, res.ok);
 
       // 배열 스택에 저장
       setBody = body;
-
-      // PostList가 재 렌더링 된후 엘리먼트가 있을때 add 이벤트
-      this.compDidMount(clickEvent);
+    } catch (error) {
+      return alert(error);
     }
-
-    //await body.forEach((item) => itemList.push(item));
-  };
-
-  Component.prototype.refresh = async function () {
-    const res = await fetch(`http://localhost:5000/api/`);
-    const body = await res.json();
-
-    // PostList 에 Props 전달
-    PostListContainer(body, res.ok);
-
-    // 배열 스택에 저장
-    setBody = body;
   };
 
   return Component;

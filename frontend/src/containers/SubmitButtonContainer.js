@@ -1,7 +1,6 @@
 import submitButton from '../components/write/submitButton';
-import { editorStore } from '../modules';
+import { store } from '../modules';
 import * as WM from '../modules/writeModule';
-import PostListContainer from './PostListContainer';
 
 /** @jsx h */
 // eslint-disable-next-line no-unused-vars
@@ -15,11 +14,11 @@ const SubmitButtonContainer = (Instance) => {
     submitButton: document.querySelector('#submitButton'),
   };
 
-  const dispatch = editorStore.dispatch;
+  const dispatch = store.editor.dispatch;
   const hashPath = window.location.hash.replace('#', '');
 
   const getState = () => {
-    return editorStore.getState();
+    return store.editor.getState();
   };
   let setState = {};
 
@@ -56,41 +55,47 @@ const SubmitButtonContainer = (Instance) => {
     };
 
     async function postWrite(state) {
-      const res = await fetch(`http://localhost:5000/api/`, {
-        method: 'POST',
-        headers: { 'content-Type': 'application/json' },
-        body: JSON.stringify(state),
-      });
+      try {
+        const res = await fetch(`http://localhost:5000/api/`, {
+          method: 'POST',
+          headers: { 'content-Type': 'application/json' },
+          body: JSON.stringify(state),
+        });
 
-      const body = await res.json();
-      //console.log(body, '리스폰스 바디');
-      //console.log(state, 'write 할때 state');
+        const body = await res.json();
 
-      if (res.ok) {
-        PostListContainer(body, res.ok);
-        const postId = body[body.length - 1].postId;
-        return (location.href = `#${postId}`);
+        if (res.status === 404) {
+          return (location.href = '#error');
+        } else if (res.ok) {
+          Instance.refresh();
+          const postId = body[body.length - 1].postId;
+          return (location.href = `#${postId}`);
+        }
+      } catch (error) {
+        return alert(error);
       }
     }
 
     async function postUpdate(state) {
-      const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
-        method: 'PATCH',
-        headers: { 'content-Type': 'application/json' },
-        body: JSON.stringify(state),
-      });
+      try {
+        const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
+          method: 'PATCH',
+          headers: { 'content-Type': 'application/json' },
+          body: JSON.stringify(state),
+        });
 
-      const body = await res.json();
-      //console.log(body, '리스폰스 바디');
-      //console.log(state, 'write 할때 state');
-
-      if (res.ok) {
-        PostListContainer(body, res.ok);
-        return (location.href = `#${setState.postId}`);
+        if (res.status === 404) {
+          return (location.href = '#error');
+        } else if (res.ok) {
+          Instance.refresh();
+          return (location.href = `#${setState.postId}`);
+        }
+      } catch (error) {
+        return alert(error);
       }
     }
 
-    editorStore.subscribe(onPublish);
+    store.editor.subscribe(onPublish);
     clickEvent();
   }, $elem.submitButtonBlock);
 

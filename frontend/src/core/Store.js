@@ -1,3 +1,9 @@
+/*
+export const combineReducers = (fnObj) => {
+  console.log(fnObj.postListModule(), 'fnObj.postListModule');
+  return fnObj;
+};
+*/
 export const createStore = (reducer) => {
   let state;
   const listeners = new Set();
@@ -6,7 +12,6 @@ export const createStore = (reducer) => {
 
   const dispatch = (action) => {
     state = reducer(state, action);
-    console.log('update state', state);
     publish();
   };
 

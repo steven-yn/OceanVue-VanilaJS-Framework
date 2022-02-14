@@ -1,8 +1,7 @@
+import { store } from '../../modules';
+import { pageLength, pageInit } from '../../modules/PostListModule';
+
 /** @jsx h */
-
-import { postListStore } from '../../modules';
-import { pageLength } from '../../modules/PostListModule';
-
 // eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   if (Array.isArray(...children)) {
@@ -79,17 +78,14 @@ export const PageNum = (state = 1) => {
 };
 
 const PostList = (itemList, done, state) => {
-  //console.log(itemList, 'postList 에서 받은 List');
-  //console.log(state, 'postList 내의 상태');
-
-  const { value, datedSelector, pagenateSelector, authorFilter, page } = state;
+  const { value, datedSelector, pagenateSelector, authorFilter } = state;
   const pagenateList = [];
   let outputList = [];
 
   if (itemList) {
     let pages = 1; // 기본값 1
     let itemPerPage = 30;
-    const pageItem = itemList.length; // 77
+    const pageItem = itemList.length;
     // 초기 : null, 셀렉트시에 들어옴
 
     const parsePageSelector = () => {
@@ -219,30 +215,27 @@ const PostList = (itemList, done, state) => {
   });
 
   // store 에 페이지 length 를 기록.
-  postListStore.dispatch(pageLength({ number: validList.length })); // 기본값 : [30, 30, 17], 3
+  store.postList.dispatch(pageLength({ number: validList.length })); // 기본값 : [30, 30, 17], 3
 
   // 2차원 배열상( 상태로 관리되는 가상 페이지네이션 배열 ) 에서 페이지 에 뿌려줄 item을 지정
   // [[array(30)] [array(30)] [array(17)]] page = 1 이면 [0] 의 배열을 map 으로 엘리먼트를 생성한다 !
-  //console.log(validList, 'validList 배열');
+
   if (validList.length === 0) {
     done = false;
   }
-  //console.log(outputList, 'validList 배열');
   if (outputList.length === 0) {
     done = false;
   }
 
   const getPage = (list) => {
-    //console.log(list, 'getPage 내의 배열');
-    //console.log(page, 'page 값');
-
-    let outPage = page;
-
-    if (!outPage) {
-      outPage = 1;
+    if (!state.page) {
+      state.page = 1;
+      store.postList.dispatch(pageInit());
+    } else if (state.page > list.length) {
+      state.page = 1;
+      store.postList.dispatch(pageInit());
     }
-
-    return list[outPage - 1].map((item) => PostItem(item));
+    return list[state.page - 1].map((item) => PostItem(item));
   };
 
   const posts = outputList && done ? getPage(validList) : <div>로딩중...</div>;
@@ -250,13 +243,12 @@ const PostList = (itemList, done, state) => {
   return (
     <div>
       {PostListTop()}
-
       <div id="pagenation">
         <div id="PostItemBlock">{posts}</div>
       </div>
       <div id="pageBtnWrap">
         <button id="prevPage">이전 페이지</button>
-        <div id="nowPage">{PageNum(page)}</div>
+        <div id="nowPage">{PageNum(state.page)}</div>
         <button id="nextPage">다음 페이지</button>
       </div>
     </div>
@@ -264,27 +256,3 @@ const PostList = (itemList, done, state) => {
 };
 
 export default PostList;
-
-/*
-else {
-      const pagenation = () => {
-        switch (pagenateSelector) {
-          case '5th':
-            return;
-          //post.slice(0, 5);
-          case '10th':
-            return;
-          //post.slice(0, 10);
-          case '15th':
-            return;
-          //post.slice(0, 15);
-          case '20th':
-            return;
-          //post.slice(0, 20);
-          default:
-            return;
-          //post;
-        }
-      };
-      return pagenation();
-*/

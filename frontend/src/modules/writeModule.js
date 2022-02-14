@@ -1,5 +1,5 @@
-const INITIALIZE = 'write/INITIALIZE'; // 모든 내용 초기화
-const CHANGE_FIELD = 'write/CHANGE_FIELD'; // 특정 key 값 바꾸기
+const INITIALIZE = 'write/INITIALIZE';
+const CHANGE_FIELD = 'write/CHANGE_FIELD';
 const WRITE_POST = 'write/WRITE_POST';
 const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST';
 const UPDATE_POST = 'write/UPDATE_POST';

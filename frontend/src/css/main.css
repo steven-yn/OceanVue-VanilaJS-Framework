@@ -49,3 +49,8 @@ body {
   display: flex;
   align-items: center;
 }
+
+#notFound {
+  display: flex;
+  justify-content: center;
+}

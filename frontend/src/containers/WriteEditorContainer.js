@@ -1,9 +1,8 @@
 import Header from '../components/common/header';
 import WriteEditor from '../components/write/WriteEditor';
 import Component from '../core/Component';
-import { editorStore } from '../modules';
+import { store } from '../modules';
 import * as WM from '../modules/writeModule';
-import { postStore } from '../modules';
 
 /** @jsx h */
 // eslint-disable-next-line no-unused-vars
@@ -22,13 +21,11 @@ const WriteEditorContainer = () => {
     editorInput: document.querySelector('#editorInput'),
   };
 
-  console.log('wr컨테이너 실행');
-
-  const dispatch = editorStore.dispatch;
+  const dispatch = store.editor.dispatch;
   const mount = WM.initialize;
   const hashPath = window.location.hash.replace('#', '');
   const getState = () => {
-    return postStore.getState();
+    return store.post.getState();
   };
   let setState = {};
 
@@ -52,7 +49,6 @@ const WriteEditorContainer = () => {
         dispatch(WM.setOriginalPost(onFix()));
       }
       setState = getState();
-      console.log(setState);
       $elem.titleinput.value = setState.post.title;
       $elem.authorInput.value = setState.post.author;
       $elem.editorInput.value = setState.post.body;
@@ -74,7 +70,7 @@ const WriteEditorContainer = () => {
       };
     };
 
-    editorStore.subscribe(onChangeField);
+    store.editor.subscribe(onChangeField);
     changeEvent();
   }, $elem.writeEditorWrap);
 

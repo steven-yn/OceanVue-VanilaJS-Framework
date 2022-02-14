@@ -1,4 +1,5 @@
 /** @jsx h */
+// eslint-disable-next-line no-unused-vars
 const h = (type, props, ...children) => {
   return { type, props, children };
 };

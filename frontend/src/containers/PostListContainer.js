@@ -1,5 +1,5 @@
 import PostList from '../components/post/PostList';
-import { postListStore } from '../modules';
+import { store } from '../modules';
 import * as PLM from '../modules/PostListModule';
 import Component from '../core/Component';
 
@@ -17,25 +17,29 @@ export const clickEvent = () => {
     PostListBlock: document.querySelector('#PostListBlock'),
   };
 
-  const dispatch = postListStore.dispatch;
+  const dispatch = store.postList.dispatch;
   const getState = () => {
-    return postListStore.getState();
+    return store.postList.getState();
   };
   let setState = {};
 
-  $elem.authorTag.forEach((elem) => {
-    elem.onclick = () => {
-      dispatch(PLM.authorSelect({ value: elem.firstChild.data }));
-      setState = getState();
+  $elem.PostListBlock.onclick = (event) => {
+    let span = event.target.closest('span');
 
-      //console.log(setState.postList);
+    if (!span) return;
 
-      compPostList.render(
-        PostList(setState.postList, true, setState),
-        $elem.PostListBlock,
-      );
-    };
-  });
+    if (!$elem.PostListBlock.contains(span)) return;
+
+    if (event.target.className != 'authorTag') return;
+
+    dispatch(PLM.authorSelect({ value: event.target.firstChild.data }));
+    setState = getState();
+
+    compPostList.render(
+      PostList(setState.postList, true, setState),
+      $elem.PostListBlock,
+    );
+  };
 };
 
 const PostListContainer = (itemList, done) => {
@@ -52,9 +56,9 @@ const PostListContainer = (itemList, done) => {
     nextPage: document.querySelector('#nextPage'),
   };
 
-  const dispatch = postListStore.dispatch;
+  const dispatch = store.postList.dispatch;
   const getState = () => {
-    return postListStore.getState();
+    return store.postList.getState();
   };
   let setState = {};
 
@@ -74,7 +78,6 @@ const PostListContainer = (itemList, done) => {
   const onLoad = () => {
     if (!itemList) {
       setState = getState();
-      //console.log('onLoad 때 상태', setState);
 
       dispatch(PLM.readPostList(setState.postList));
       compPostList.render(
@@ -83,7 +86,6 @@ const PostListContainer = (itemList, done) => {
       );
     } else {
       setState = getState();
-      //console.log(itemList, 'onLoad 때 itemList');
       dispatch(PLM.readPostList(itemList));
       compPostList.render(
         PostList(itemList, true, setState),
@@ -175,7 +177,7 @@ const PostListContainer = (itemList, done) => {
         if (getState().page === 1) {
           return alert('이전 페이지가 없습니다 !');
         } else {
-          postListStore.dispatch(PLM.pageDecrease());
+          store.postList.dispatch(PLM.pageDecrease());
           setState = getState();
 
           if (!itemList) {
@@ -197,7 +199,7 @@ const PostListContainer = (itemList, done) => {
         if (getState().page >= pageLength) {
           return alert('마지막 페이지 입니다 !');
         } else {
-          postListStore.dispatch(PLM.pageIncrease());
+          store.postList.dispatch(PLM.pageIncrease());
           setState = getState();
 
           if (!itemList) {
@@ -230,9 +232,6 @@ const PostListContainer = (itemList, done) => {
           $elem.datedSelector.value = 'none'; // 셀렉터 초기화
           $elem.pagenateSelector.value = 'none'; // 셀렉터 초기화
 
-          //console.log(itemList, 'default 내의 itemList');
-          //console.log(getState(), 'default 내의 getState');
-
           if (!itemList) {
             compPostList.render(
               PostList(getState().postList, true, getState()),
@@ -254,6 +253,12 @@ const PostListContainer = (itemList, done) => {
       $elem.refreshButton.onclick = () => {
         compPostList.getPostList();
         setState = getState();
+
+        dispatch(PLM.changeField('')); // 스토어 내 value 값 초기화
+        $elem.searchBar.value = ''; // 검색바 비우기
+        $elem.datedSelector.value = 'none'; // 셀렉터 초기화
+        $elem.pagenateSelector.value = 'none'; // 셀렉터 초기화
+
         if (!itemList) {
           dispatch(PLM.refreshStore(setState.postList));
         } else {
@@ -263,7 +268,7 @@ const PostListContainer = (itemList, done) => {
     };
 
     onLoad();
-    postListStore.subscribe(onSetState);
+    store.postList.subscribe(onSetState);
 
     changeEvent();
     searchEvent();

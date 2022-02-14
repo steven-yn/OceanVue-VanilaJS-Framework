@@ -22,3 +22,7 @@ button + button {
 #submitButtonBlock + #submitButtonBlock {
   margin-left: 0.5rem;
 }
+
+button a {
+  color: white;
+}
