@@ -10,7 +10,7 @@ const Header = () => {
       <div class="logo">
         <a href="#">Zum-Board</a>
       </div>
-      <div class="rightBox">오른쪽박스</div>
+      <div class="rightBox"></div>
     </header>
   );
 };

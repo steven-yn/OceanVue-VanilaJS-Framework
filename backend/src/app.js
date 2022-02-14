@@ -10,8 +10,4 @@ app.use(express.json());
 
 app.use('/api', apiRoutes);
 
-app.listen(5000, () => {
-  console.log(
-    'Hello Zum-Board! My Nickname is yoonOcean -> http://localhost:5000',
-  );
-});
+app.listen(process.env.PORT || 5000);

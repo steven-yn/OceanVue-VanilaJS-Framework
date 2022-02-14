@@ -56,11 +56,14 @@ const SubmitButtonContainer = (Instance) => {
 
     async function postWrite(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/`, {
-          method: 'POST',
-          headers: { 'content-Type': 'application/json' },
-          body: JSON.stringify(state),
-        });
+        const res = await fetch(
+          `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
+          {
+            method: 'POST',
+            headers: { 'content-Type': 'application/json' },
+            body: JSON.stringify(state),
+          },
+        );
 
         const body = await res.json();
 
@@ -78,11 +81,14 @@ const SubmitButtonContainer = (Instance) => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
-          method: 'PATCH',
-          headers: { 'content-Type': 'application/json' },
-          body: JSON.stringify(state),
-        });
+        const res = await fetch(
+          `https://yoonocean-zum-board-backend.herokuapp.com/api/${state.postId}`,
+          {
+            method: 'PATCH',
+            headers: { 'content-Type': 'application/json' },
+            body: JSON.stringify(state),
+          },
+        );
 
         if (res.status === 404) {
           return (location.href = '#error');
