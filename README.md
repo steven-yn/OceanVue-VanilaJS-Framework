@@ -6,6 +6,7 @@
 
 > - Backend 구성 : Node.js
 > - Frontend 구성 : Vanila JS Custom Framework (명칭 OceanVue 😅)
+> - 배포 : heroku(Backend) + Github-Pages(Frontend)
 
 ### Node.js
 
@@ -13,8 +14,10 @@
 > - Data 저장은 JSON 파일에 저장.
 > - API 캐싱 적용
 
-### OceanVue *(Vanila JS Custom Framework)*
-*(~~사실 React에 더 가까우나 yoonOcean에 맞는 별칭을 지어주고 싶었습니다~~)*
+### OceanVue _(Vanila JS Custom Framework)_
+
+_(~~사실 React에 더 가까우나 yoonOcean에 맞는 별칭을 지어주고 싶었습니다~~)_
+
 > - React 와 Redux 를 모티브로 프레임워크를 제작
 > - Fetch API 를 통한 서버 연동
 > - Hash 방식 SPA Routing
@@ -28,6 +31,7 @@
 > - webpack 을 통한 js 파일과 css 파일 번들링, build 를 통한 index.html 에서 bundle.js 파일 하나로 실행됩니다.
 
 ### 게시판 Zum-Board 구현
+
 > - 페이지네이션, 작성일 기준 오름/내림차순, 작성자 클릭시 해당 작성자 기준, 검색 기능 등의 정렬 필터링 구현.
 > - 페이지 이동간 새로고침 발생하지 않고, routes 배열에 등록된 컴포넌트 실행.
 > - 실제 DOM 렌더링후 컴포넌트들 재실행을 통해 엘리먼트 취득 및 이벤트 리스너 추가
