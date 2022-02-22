@@ -8,6 +8,8 @@
 /coverage
 
 # production
+/build
+
 /build/bundle*
 /wait
 
