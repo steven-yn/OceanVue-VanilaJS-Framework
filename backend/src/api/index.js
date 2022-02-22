@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', postCtrl.Create);
 router.get('/', postCtrl.readList);
-router.get('/:postId', postCtrl.read);
-router.patch('/:postId', postCtrl.update);
-router.delete('/:postId', postCtrl.remove);
+router.get('/:projectId', postCtrl.read);
+router.patch('/:projectId', postCtrl.update);
+router.delete('/:projectId', postCtrl.remove);
 
 export default router;

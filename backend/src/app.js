@@ -3,6 +3,7 @@ import apiRoutes from './api/index';
 import cors from 'cors';
 
 const app = express();
+/*
 const whitelist = [
   'http://localhost:9010',
   'https://steven-yn.github.io/OceanVue-VanilaJS-Framework',
@@ -20,7 +21,8 @@ const corsOptions = {
   },
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
+*/
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
