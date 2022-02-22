@@ -27,7 +27,9 @@ const PostContainer = () => {
 
   async function getPost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${projectId}`);
+      const res = await fetch(
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`,
+      );
       if (res.status === 404) {
         return (location.href = '#error');
       }
@@ -41,9 +43,12 @@ const PostContainer = () => {
 
   async function deletePost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${projectId}`, {
-        method: 'DELETE',
-      });
+      const res = await fetch(
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`,
+        {
+          method: 'DELETE',
+        },
+      );
 
       if (res.status === 404) {
         return (location.href = '#error');

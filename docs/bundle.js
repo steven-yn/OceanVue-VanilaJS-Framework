@@ -2,43 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/common/NotFound.js":
-/*!*******************************************!*\
-  !*** ./src/components/common/NotFound.js ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header */ "./src/components/common/header.js");
-
-/** @jsx h */
-// eslint-disable-next-line no-unused-vars
-
-const h = (type, props, ...children) => {
-  return {
-    type,
-    props,
-    children
-  };
-};
-
-const NotFound = () => {
-  return h("div", {
-    id: "wrap"
-  }, (0,_header__WEBPACK_IMPORTED_MODULE_0__["default"])(), h("div", {
-    class: "spacer"
-  }), h("div", {
-    id: "notFound"
-  }, h("div", null, h("h1", null, "Page Not Found : 404"), h("p", null, "\uD398\uC774\uC9C0\uB97C \uCC3E\uC744\uC218 \uC5C6\uC2B5\uB2C8\uB2E4."), h("p", null, "\uC798\uBABB\uB41C \uACBD\uB85C\uB97C \uC785\uB825\uD588\uAC70\uB098 \uC0AD\uC81C\uB41C \uAC8C\uC2DC\uBB3C \uC785\uB2C8\uB2E4."))));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NotFound);
-
-/***/ }),
-
 /***/ "./src/components/common/header.js":
 /*!*****************************************!*\
   !*** ./src/components/common/header.js ***!
@@ -66,7 +29,7 @@ const Header = () => {
     href: "#"
   }, "Zum-Board")), h("div", {
     class: "rightBox"
-  }));
+  }, "\uC624\uB978\uCABD\uBC15\uC2A4"));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
@@ -95,7 +58,7 @@ const h = (type, props, ...children) => {
 
 const PostTop = post => {
   const {
-    postId,
+    projectId,
     title,
     author,
     wrDate
@@ -118,7 +81,7 @@ const PostTop = post => {
     href: "#"
   }, "\uC0AD\uC81C")))), h("div", {
     id: "PostHead"
-  }, "\uD3EC\uC2A4\uD2B8 \uBC88\uD638 : ", `${postId}`, " ", h("br", null), "\uC791\uC131\uC790 : ", author, " ", h("br", null), "\uC791\uC131\uC77C : ", wrDate));
+  }, "\uD3EC\uC2A4\uD2B8 \uBC88\uD638 : ", `${projectId}`, " ", h("br", null), "\uC791\uC131\uC790 : ", author, " ", h("br", null), "\uC791\uC131\uC77C : ", wrDate));
 };
 
 const Post = (post, done) => {
@@ -218,7 +181,7 @@ const PostListTop = () => {
 
 const PostItem = item => {
   const {
-    postId,
+    projectId,
     title,
     author,
     wrDate
@@ -226,8 +189,8 @@ const PostItem = item => {
   return h("div", {
     id: "PostItem"
   }, h("h3", null, h("a", {
-    href: '#' + postId
-  }, h("span", null, `${postId}.`), h("span", null, title))), h("div", null, h("p", null, h("span", {
+    href: '#' + projectId
+  }, h("span", null, `${projectId}.`), h("span", null, title))), h("div", null, h("p", null, h("span", {
     class: "authorTag"
   }, author), h("span", null, wrDate))));
 };
@@ -308,7 +271,7 @@ const PostList = (itemList, done, state) => {
     };
 
     const parseSearchSelector = list => {
-      const postIdSearch = (target, v) => {
+      const projectIdSearch = (target, v) => {
         if (target) {
           return target.includes(v);
         } else {
@@ -333,12 +296,12 @@ const PostList = (itemList, done, state) => {
       };
 
       const result = list.filter(post => {
-        const postId = JSON.stringify(post.postId);
+        const projectId = JSON.stringify(post.projectId);
         const {
           title,
           body
         } = post;
-        return postIdSearch(postId, value) || titleSearch(title, value) || bodySearch(body, value);
+        return projectIdSearch(projectId, value) || titleSearch(title, value) || bodySearch(body, value);
       });
       return result;
     };
@@ -565,9 +528,9 @@ const PostContainer = () => {
   let setState = {};
   const hashPath = Number(window.location.hash.replace('#', ''));
 
-  async function getPost(postId) {
+  async function getPost(projectId) {
     try {
-      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`);
 
       if (res.status === 404) {
         return location.href = '#error';
@@ -580,9 +543,9 @@ const PostContainer = () => {
     }
   }
 
-  async function deletePost(postId) {
+  async function deletePost(projectId) {
     try {
-      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`, {
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`, {
         method: 'DELETE'
       });
 
@@ -994,8 +957,8 @@ const SubmitButtonContainer = Instance => {
           return location.href = '#error';
         } else if (res.ok) {
           Instance.refresh();
-          const postId = body[body.length - 1].postId;
-          return location.href = `#${postId}`;
+          const projectId = body[body.length - 1].projectId;
+          return location.href = `#${projectId}`;
         }
       } catch (error) {
         return alert(error);
@@ -1004,7 +967,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${state.postId}`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`, {
           method: 'PATCH',
           headers: {
             'content-Type': 'application/json'
@@ -1016,7 +979,7 @@ const SubmitButtonContainer = Instance => {
           return location.href = '#error';
         } else if (res.ok) {
           Instance.refresh();
-          return location.href = `#${setState.postId}`;
+          return location.href = `#${setState.projectId}`;
         }
       } catch (error) {
         return alert(error);
@@ -1186,14 +1149,14 @@ const Component = function () {
   Component.prototype.router = function (entryInstance) {
     const router = function () {
       // 해쉬 URI 값을 취득해서 해쉬태그를 제거한다.
-      // 그 값이 Number 만 들어온 경우, :postId 로 인식하게 해줌.
+      // 그 값이 Number 만 들어온 경우, :projectId 로 인식하게 해줌.
       const hashPath = window.location.hash.replace('#', '');
-      const isNum = Number(hashPath); // postId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
+      const isNum = Number(hashPath); // projectId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
 
       if (isNum) {
-        // 경로상으로 들어온 number 형태 postId 는 Post 에서 취득해서
+        // 경로상으로 들어온 number 형태 projectId 는 Post 에서 취득해서
         // 실제 데이터를 렌더링 한다.
-        const uiComponent = _routes.find(route => route.path === ':postId').component;
+        const uiComponent = _routes.find(route => route.path === ':projectId').component;
 
         entryInstance.render(uiComponent());
         entryInstance.compDidMount(uiComponent);
@@ -1313,7 +1276,7 @@ const Component = function () {
       arr[i][1] = document.querySelector(arr[i][1]);
     }
       const conv = Object.fromEntries(arr);
-    this.afterMountElem = conv;
+    this.this.afterMountElem = conv;
   };
   */
   // useEffect 와 비슷한 기능의 메서드
@@ -1678,14 +1641,14 @@ const setOriginalPost = post => ({
   post
 });
 const updatePost = ({
-  postId,
+  projectId,
   title,
   author,
   body
 }) => ({
   type: UPDATE_POST,
   payload: {
-    postId,
+    projectId,
     title,
     author,
     body
@@ -1696,7 +1659,7 @@ const initialState = {
   author: '',
   body: '',
   post: null,
-  postId: null
+  projectId: null
 };
 function editorModule(state = initialState, action = {}) {
   switch (action.type) {
@@ -1719,7 +1682,7 @@ function editorModule(state = initialState, action = {}) {
         title: action.post.title,
         author: action.post.author,
         body: action.post.body,
-        postId: action.post.postId
+        projectId: action.post.projectId
       };
 
     case UPDATE_POST:
@@ -2466,8 +2429,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _containers_WriteEditorContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./containers/WriteEditorContainer */ "./src/containers/WriteEditorContainer.js");
 /* harmony import */ var _containers_PostContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./containers/PostContainer */ "./src/containers/PostContainer.js");
 /* harmony import */ var _core_Component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./core/Component */ "./src/core/Component.js");
-/* harmony import */ var _components_common_NotFound__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/common/NotFound */ "./src/components/common/NotFound.js");
-
 
 
 
@@ -2504,16 +2465,31 @@ const routes = [{
   path: 'write',
   component: _containers_WriteEditorContainer__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
-  path: ':postId',
+  path: ':projectId',
   component: _containers_PostContainer__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
   path: 'update',
   component: _containers_WriteEditorContainer__WEBPACK_IMPORTED_MODULE_2__["default"]
-}, {
-  path: 'error',
-  component: _components_common_NotFound__WEBPACK_IMPORTED_MODULE_5__["default"]
 }];
-new _core_Component__WEBPACK_IMPORTED_MODULE_4__["default"]($entry, routes);
+const compEntry = new _core_Component__WEBPACK_IMPORTED_MODULE_4__["default"]($entry, routes); // yarn start 로 App.js 를 build 와 serve 명령을 수행.
+
+/* 
+    02.10 <- 한것 : core 문제점 수정 post 페이지에 렌더링, post페이지에서 수정 삭제 목록 기능구현
+                    글 작성하기 에서 수정가능하도록 기능구현 수정후 자동이동 구현 
+                    postList 에서 검색, 작성일, 게시물수 필터링
+
+    02.11 <- 사실상 기능구현끝. 게시판 각종 필터링 완료, 수정시 자동이동 버그 잡힘
+
+    ^ app : 404 페이지 
+    ^ post : 404 페이지
+    ^ fetch 로딩 실패 ui 처리
+
+    ^ store 수정
+    ^ 불필요한 이벤트 제거
+    ^ 이벤트 위임
+
+    -- 테스트 코드
+*/
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.

@@ -530,7 +530,7 @@ const PostContainer = () => {
 
   async function getPost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${projectId}`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`);
 
       if (res.status === 404) {
         return location.href = '#error';
@@ -545,7 +545,7 @@ const PostContainer = () => {
 
   async function deletePost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${projectId}`, {
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`, {
         method: 'DELETE'
       });
 
@@ -944,7 +944,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postWrite(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`, {
           method: 'POST',
           headers: {
             'content-Type': 'application/json'
@@ -967,7 +967,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/${state.projectId}`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`, {
           method: 'PATCH',
           headers: {
             'content-Type': 'application/json'
@@ -1300,7 +1300,7 @@ const Component = function () {
 
   Component.prototype.getPostList = async function () {
     try {
-      const res = await fetch(`http://localhost:5000/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
       const body = await res.json();
 
       if (res.status === 404) {
@@ -1322,7 +1322,7 @@ const Component = function () {
 
   Component.prototype.refresh = async function () {
     try {
-      const res = await fetch(`http://localhost:5000/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
       const body = await res.json();
 
       if (res.status === 404) {
@@ -2465,7 +2465,7 @@ const routes = [{
   path: 'write',
   component: _containers_WriteEditorContainer__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
-  path: ':postId',
+  path: ':projectId',
   component: _containers_PostContainer__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
   path: 'update',

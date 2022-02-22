@@ -28,7 +28,7 @@ const $entry = document.getElementById('root');
 const routes = [
   { path: '', component: App },
   { path: 'write', component: WriteEditorContainer },
-  { path: ':postId', component: PostContainer },
+  { path: ':projectId', component: PostContainer },
   { path: 'update', component: WriteEditorContainer },
 ];
 
