@@ -57,6 +57,7 @@ const SubmitButtonContainer = (Instance) => {
     async function postWrite(state) {
       try {
         const res = await fetch(
+          //[123]
           `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
           {
             method: 'POST',
@@ -65,14 +66,14 @@ const SubmitButtonContainer = (Instance) => {
           },
         );
 
-        const body = await res.json();
+        const body = await res.json(); //[124]
 
         if (res.status === 404) {
           return (location.href = '#error');
         } else if (res.ok) {
           Instance.refresh();
-          const postId = body[body.length - 1].postId;
-          return (location.href = `#${postId}`);
+          const projectId = body[body.length - 1].projectId;
+          return (location.href = `#${projectId}`);
         }
       } catch (error) {
         return alert(error);
@@ -82,7 +83,7 @@ const SubmitButtonContainer = (Instance) => {
     async function postUpdate(state) {
       try {
         const res = await fetch(
-          `https://yoonocean-zum-board-backend.herokuapp.com/api/${state.postId}`,
+          `https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`,
           {
             method: 'PATCH',
             headers: { 'content-Type': 'application/json' },
@@ -94,7 +95,7 @@ const SubmitButtonContainer = (Instance) => {
           return (location.href = '#error');
         } else if (res.ok) {
           Instance.refresh();
-          return (location.href = `#${setState.postId}`);
+          return (location.href = `#${setState.projectId}`);
         }
       } catch (error) {
         return alert(error);

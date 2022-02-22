@@ -53,13 +53,13 @@ const PostListTop = () => {
 };
 
 const PostItem = (item) => {
-  const { postId, title, author, wrDate } = item;
+  const { projectId, title, author, wrDate } = item;
 
   return (
     <div id="PostItem">
       <h3>
-        <a href={'#' + postId}>
-          <span>{`${postId}.`}</span>
+        <a href={'#' + projectId}>
+          <span>{`${projectId}.`}</span>
           <span>{title}</span>
         </a>
       </h3>
@@ -83,6 +83,7 @@ const PostList = (itemList, done, state) => {
   let outputList = [];
 
   if (itemList) {
+    // 리스트가 들어왔으면, 정렬을 시작
     let pages = 1; // 기본값 1
     let itemPerPage = 30;
     const pageItem = itemList.length;
@@ -134,7 +135,7 @@ const PostList = (itemList, done, state) => {
     };
 
     const parseSearchSelector = (list) => {
-      const postIdSearch = (target, v) => {
+      const projectIdSearch = (target, v) => {
         if (target) {
           return target.includes(v);
         } else {
@@ -157,11 +158,11 @@ const PostList = (itemList, done, state) => {
       };
 
       const result = list.filter((post) => {
-        const postId = JSON.stringify(post.postId);
+        const projectId = JSON.stringify(post.projectId);
         const { title, body } = post;
 
         return (
-          postIdSearch(postId, value) ||
+          projectIdSearch(projectId, value) ||
           titleSearch(title, value) ||
           bodySearch(body, value)
         );

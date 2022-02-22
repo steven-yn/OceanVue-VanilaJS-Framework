@@ -23,17 +23,17 @@ const Component = (function () {
   Component.prototype.router = function (entryInstance) {
     const router = function () {
       // 해쉬 URI 값을 취득해서 해쉬태그를 제거한다.
-      // 그 값이 Number 만 들어온 경우, :postId 로 인식하게 해줌.
+      // 그 값이 Number 만 들어온 경우, :projectId 로 인식하게 해줌.
       const hashPath = window.location.hash.replace('#', '');
       const isNum = Number(hashPath);
 
-      // postId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
+      // projectId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
       if (isNum) {
-        // 경로상으로 들어온 number 형태 postId 는 Post 에서 취득해서
+        // 경로상으로 들어온 number 형태 projectId 는 Post 에서 취득해서
         // 실제 데이터를 렌더링 한다.
 
         const uiComponent = _routes.find(
-          (route) => route.path === ':postId',
+          (route) => route.path === ':projectId',
         ).component;
 
         entryInstance.render(uiComponent());

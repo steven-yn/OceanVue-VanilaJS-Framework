@@ -17,9 +17,9 @@ export const setOriginalPost = (post) => ({
   type: SET_ORIGINAL_POST,
   post,
 });
-export const updatePost = ({ postId, title, author, body }) => ({
+export const updatePost = ({ projectId, title, author, body }) => ({
   type: UPDATE_POST,
-  payload: { postId, title, author, body },
+  payload: { projectId, title, author, body },
 });
 
 const initialState = {
@@ -27,7 +27,7 @@ const initialState = {
   author: '',
   body: '',
   post: null,
-  postId: null,
+  projectId: null,
 };
 
 export default function editorModule(state = initialState, action = {}) {
@@ -52,7 +52,7 @@ export default function editorModule(state = initialState, action = {}) {
         title: action.post.title,
         author: action.post.author,
         body: action.post.body,
-        postId: action.post.postId,
+        projectId: action.post.projectId,
       };
     case UPDATE_POST:
       return {

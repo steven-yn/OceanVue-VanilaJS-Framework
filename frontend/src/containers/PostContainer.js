@@ -25,10 +25,10 @@ const PostContainer = () => {
   let setState = {};
   const hashPath = Number(window.location.hash.replace('#', ''));
 
-  async function getPost(postId) {
+  async function getPost(projectId) {
     try {
       const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`,
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`,
       );
       if (res.status === 404) {
         return (location.href = '#error');
@@ -41,10 +41,10 @@ const PostContainer = () => {
     }
   }
 
-  async function deletePost(postId) {
+  async function deletePost(projectId) {
     try {
       const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/${postId}`,
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`,
         {
           method: 'DELETE',
         },
