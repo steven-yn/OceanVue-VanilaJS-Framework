@@ -68,8 +68,8 @@ const SubmitButtonContainer = (Instance) => {
           return (location.href = '#error');
         } else if (res.ok) {
           Instance.refresh();
-          const postId = body[body.length - 1].postId;
-          return (location.href = `#${postId}`);
+          const projectId = body[body.length - 1].projectId;
+          return (location.href = `#${projectId}`);
         }
       } catch (error) {
         return alert(error);
@@ -78,17 +78,20 @@ const SubmitButtonContainer = (Instance) => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
-          method: 'PATCH',
-          headers: { 'content-Type': 'application/json' },
-          body: JSON.stringify(state),
-        });
+        const res = await fetch(
+          `http://localhost:5000/api/${state.projectId}`,
+          {
+            method: 'PATCH',
+            headers: { 'content-Type': 'application/json' },
+            body: JSON.stringify(state),
+          },
+        );
 
         if (res.status === 404) {
           return (location.href = '#error');
         } else if (res.ok) {
           Instance.refresh();
-          return (location.href = `#${setState.postId}`);
+          return (location.href = `#${setState.projectId}`);
         }
       } catch (error) {
         return alert(error);

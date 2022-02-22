@@ -58,7 +58,7 @@ const h = (type, props, ...children) => {
 
 const PostTop = post => {
   const {
-    postId,
+    projectId,
     title,
     author,
     wrDate
@@ -81,7 +81,7 @@ const PostTop = post => {
     href: "#"
   }, "\uC0AD\uC81C")))), h("div", {
     id: "PostHead"
-  }, "\uD3EC\uC2A4\uD2B8 \uBC88\uD638 : ", `${postId}`, " ", h("br", null), "\uC791\uC131\uC790 : ", author, " ", h("br", null), "\uC791\uC131\uC77C : ", wrDate));
+  }, "\uD3EC\uC2A4\uD2B8 \uBC88\uD638 : ", `${projectId}`, " ", h("br", null), "\uC791\uC131\uC790 : ", author, " ", h("br", null), "\uC791\uC131\uC77C : ", wrDate));
 };
 
 const Post = (post, done) => {
@@ -181,7 +181,7 @@ const PostListTop = () => {
 
 const PostItem = item => {
   const {
-    postId,
+    projectId,
     title,
     author,
     wrDate
@@ -189,8 +189,8 @@ const PostItem = item => {
   return h("div", {
     id: "PostItem"
   }, h("h3", null, h("a", {
-    href: '#' + postId
-  }, h("span", null, `${postId}.`), h("span", null, title))), h("div", null, h("p", null, h("span", {
+    href: '#' + projectId
+  }, h("span", null, `${projectId}.`), h("span", null, title))), h("div", null, h("p", null, h("span", {
     class: "authorTag"
   }, author), h("span", null, wrDate))));
 };
@@ -271,7 +271,7 @@ const PostList = (itemList, done, state) => {
     };
 
     const parseSearchSelector = list => {
-      const postIdSearch = (target, v) => {
+      const projectIdSearch = (target, v) => {
         if (target) {
           return target.includes(v);
         } else {
@@ -296,12 +296,12 @@ const PostList = (itemList, done, state) => {
       };
 
       const result = list.filter(post => {
-        const postId = JSON.stringify(post.postId);
+        const projectId = JSON.stringify(post.projectId);
         const {
           title,
           body
         } = post;
-        return postIdSearch(postId, value) || titleSearch(title, value) || bodySearch(body, value);
+        return projectIdSearch(projectId, value) || titleSearch(title, value) || bodySearch(body, value);
       });
       return result;
     };
@@ -528,9 +528,9 @@ const PostContainer = () => {
   let setState = {};
   const hashPath = Number(window.location.hash.replace('#', ''));
 
-  async function getPost(postId) {
+  async function getPost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${postId}`);
+      const res = await fetch(`http://localhost:5000/api/${projectId}`);
 
       if (res.status === 404) {
         return location.href = '#error';
@@ -543,9 +543,9 @@ const PostContainer = () => {
     }
   }
 
-  async function deletePost(postId) {
+  async function deletePost(projectId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/${postId}`, {
+      const res = await fetch(`http://localhost:5000/api/${projectId}`, {
         method: 'DELETE'
       });
 
@@ -957,8 +957,8 @@ const SubmitButtonContainer = Instance => {
           return location.href = '#error';
         } else if (res.ok) {
           Instance.refresh();
-          const postId = body[body.length - 1].postId;
-          return location.href = `#${postId}`;
+          const projectId = body[body.length - 1].projectId;
+          return location.href = `#${projectId}`;
         }
       } catch (error) {
         return alert(error);
@@ -967,7 +967,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`http://localhost:5000/api/${state.postId}`, {
+        const res = await fetch(`http://localhost:5000/api/${state.projectId}`, {
           method: 'PATCH',
           headers: {
             'content-Type': 'application/json'
@@ -979,7 +979,7 @@ const SubmitButtonContainer = Instance => {
           return location.href = '#error';
         } else if (res.ok) {
           Instance.refresh();
-          return location.href = `#${setState.postId}`;
+          return location.href = `#${setState.projectId}`;
         }
       } catch (error) {
         return alert(error);
@@ -1149,14 +1149,14 @@ const Component = function () {
   Component.prototype.router = function (entryInstance) {
     const router = function () {
       // 해쉬 URI 값을 취득해서 해쉬태그를 제거한다.
-      // 그 값이 Number 만 들어온 경우, :postId 로 인식하게 해줌.
+      // 그 값이 Number 만 들어온 경우, :projectId 로 인식하게 해줌.
       const hashPath = window.location.hash.replace('#', '');
-      const isNum = Number(hashPath); // postId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
+      const isNum = Number(hashPath); // projectId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
 
       if (isNum) {
-        // 경로상으로 들어온 number 형태 postId 는 Post 에서 취득해서
+        // 경로상으로 들어온 number 형태 projectId 는 Post 에서 취득해서
         // 실제 데이터를 렌더링 한다.
-        const uiComponent = _routes.find(route => route.path === ':postId').component;
+        const uiComponent = _routes.find(route => route.path === ':projectId').component;
 
         entryInstance.render(uiComponent());
         entryInstance.compDidMount(uiComponent);
@@ -1641,14 +1641,14 @@ const setOriginalPost = post => ({
   post
 });
 const updatePost = ({
-  postId,
+  projectId,
   title,
   author,
   body
 }) => ({
   type: UPDATE_POST,
   payload: {
-    postId,
+    projectId,
     title,
     author,
     body
@@ -1659,7 +1659,7 @@ const initialState = {
   author: '',
   body: '',
   post: null,
-  postId: null
+  projectId: null
 };
 function editorModule(state = initialState, action = {}) {
   switch (action.type) {
@@ -1682,7 +1682,7 @@ function editorModule(state = initialState, action = {}) {
         title: action.post.title,
         author: action.post.author,
         body: action.post.body,
-        postId: action.post.postId
+        projectId: action.post.projectId
       };
 
     case UPDATE_POST:
