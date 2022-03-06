@@ -28,7 +28,7 @@ const PostContainer = () => {
   async function getPost(projectId) {
     try {
       const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`,
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/project/${projectId}`,
       );
       if (res.status === 404) {
         return (location.href = '#error');

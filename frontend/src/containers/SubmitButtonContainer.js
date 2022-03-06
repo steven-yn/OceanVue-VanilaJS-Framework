@@ -57,7 +57,7 @@ const SubmitButtonContainer = (Instance) => {
     async function postWrite(state) {
       try {
         const res = await fetch(
-          `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
+          `https://yoonocean-zum-board-backend.herokuapp.com/api/project/`,
           {
             method: 'POST',
             headers: { 'content-Type': 'application/json' },
@@ -82,7 +82,7 @@ const SubmitButtonContainer = (Instance) => {
     async function postUpdate(state) {
       try {
         const res = await fetch(
-          `https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`,
+          `https://yoonocean-zum-board-backend.herokuapp.com/api/project/${state.projectId}`,
           {
             method: 'PATCH',
             headers: { 'content-Type': 'application/json' },

@@ -189,7 +189,7 @@ const Component = (function () {
   Component.prototype.getPostList = async function () {
     try {
       const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/project/`,
       );
       const body = await res.json();
 
@@ -215,7 +215,7 @@ const Component = (function () {
   Component.prototype.refresh = async function () {
     try {
       const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
+        `https://yoonocean-zum-board-backend.herokuapp.com/api/project/`,
       );
       const body = await res.json();
 
