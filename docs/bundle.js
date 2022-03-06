@@ -530,7 +530,7 @@ const PostContainer = () => {
 
   async function getPost(projectId) {
     try {
-      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${projectId}`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/project/${projectId}`);
 
       if (res.status === 404) {
         return location.href = '#error';
@@ -944,7 +944,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postWrite(state) {
       try {
-        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/project/`, {
           method: 'POST',
           headers: {
             'content-Type': 'application/json'
@@ -967,7 +967,7 @@ const SubmitButtonContainer = Instance => {
 
     async function postUpdate(state) {
       try {
-        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`, {
+        const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/project/${state.projectId}`, {
           method: 'PATCH',
           headers: {
             'content-Type': 'application/json'
@@ -1300,7 +1300,7 @@ const Component = function () {
 
   Component.prototype.getPostList = async function () {
     try {
-      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/project/`);
       const body = await res.json();
 
       if (res.status === 404) {
@@ -1322,7 +1322,7 @@ const Component = function () {
 
   Component.prototype.refresh = async function () {
     try {
-      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/`);
+      const res = await fetch(`https://yoonocean-zum-board-backend.herokuapp.com/api/project/`);
       const body = await res.json();
 
       if (res.status === 404) {
