@@ -1,5 +1,6 @@
 import PostListContainer from '../containers/PostListContainer';
 import { clickEvent } from '../containers/PostListContainer';
+import postReq from './postAPI';
 
 // 생성자 함수
 
@@ -23,17 +24,17 @@ const Component = (function () {
   Component.prototype.router = function (entryInstance) {
     const router = function () {
       // 해쉬 URI 값을 취득해서 해쉬태그를 제거한다.
-      // 그 값이 Number 만 들어온 경우, :projectId 로 인식하게 해줌.
+      // 그 값이 Number 만 들어온 경우, :postId 로 인식하게 해줌.
       const hashPath = window.location.hash.replace('#', '');
       const isNum = Number(hashPath);
 
-      // projectId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
+      // postId 로 라우팅 되는 게시물 1개 보기일때, Post 관련 컴포넌트를 렌더링
       if (isNum) {
-        // 경로상으로 들어온 number 형태 projectId 는 Post 에서 취득해서
+        // 경로상으로 들어온 number 형태 postId 는 Post 에서 취득해서
         // 실제 데이터를 렌더링 한다.
 
         const uiComponent = _routes.find(
-          (route) => route.path === ':projectId',
+          (route) => route.path === ':postId',
         ).component;
 
         entryInstance.render(uiComponent());
@@ -188,9 +189,8 @@ const Component = (function () {
 
   Component.prototype.getPostList = async function () {
     try {
-      const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/project/`,
-      );
+      const res = await postReq.getList('/api');
+
       const body = await res.json();
 
       if (res.status === 404) {
@@ -208,15 +208,14 @@ const Component = (function () {
         this.compDidMount(clickEvent);
       }
     } catch (error) {
+      console.error(error);
       return alert(error);
     }
   };
 
   Component.prototype.refresh = async function () {
     try {
-      const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/project/`,
-      );
+      const res = await postReq.getList('/api/');
       const body = await res.json();
 
       if (res.status === 404) {

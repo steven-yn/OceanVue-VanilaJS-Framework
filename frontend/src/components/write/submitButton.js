@@ -1,8 +1,6 @@
-/** @jsx h */
+/** @jsx jsx */
 // eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  return { type, props, children };
-};
+import jsx from '../../core/jsxFuntion';
 
 const submitButton = () => {
   return (

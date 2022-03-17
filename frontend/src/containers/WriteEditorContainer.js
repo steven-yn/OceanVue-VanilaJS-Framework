@@ -1,14 +1,11 @@
-import Header from '../components/common/header';
+/** @jsx jsx */
+// eslint-disable-next-line no-unused-vars
+import jsx from '../core/jsxFuntion';
+import Header from '../components/common/Header';
 import WriteEditor from '../components/write/WriteEditor';
 import Component from '../core/Component';
 import { store } from '../modules';
 import * as WM from '../modules/writeModule';
-
-/** @jsx h */
-// eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  return { type, props, children };
-};
 
 const compWrite = new Component();
 

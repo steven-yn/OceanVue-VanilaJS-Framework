@@ -1,16 +1,8 @@
+/** @jsx arrayJsx */
+// eslint-disable-next-line no-unused-vars
+import { arrayJsx } from '../../core/jsxFuntion';
 import { store } from '../../modules';
 import { pageLength, pageInit } from '../../modules/PostListModule';
-
-/** @jsx h */
-// eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  if (Array.isArray(...children)) {
-    const arrConv = Object.values(children[0]);
-    children = arrConv;
-  }
-
-  return { type, props, children };
-};
 
 const PostListTop = () => {
   return (
@@ -53,13 +45,13 @@ const PostListTop = () => {
 };
 
 const PostItem = (item) => {
-  const { projectId, title, author, wrDate } = item;
+  const { postId, title, author, wrDate } = item;
 
   return (
     <div id="PostItem">
       <h3>
-        <a href={'#' + projectId}>
-          <span>{`${projectId}.`}</span>
+        <a href={'#' + postId}>
+          <span>{`${postId}.`}</span>
           <span>{title}</span>
         </a>
       </h3>
@@ -134,7 +126,7 @@ const PostList = (itemList, done, state) => {
     };
 
     const parseSearchSelector = (list) => {
-      const projectIdSearch = (target, v) => {
+      const postIdSearch = (target, v) => {
         if (target) {
           return target.includes(v);
         } else {
@@ -157,11 +149,11 @@ const PostList = (itemList, done, state) => {
       };
 
       const result = list.filter((post) => {
-        const projectId = JSON.stringify(post.projectId);
+        const postId = JSON.stringify(post.postId);
         const { title, body } = post;
 
         return (
-          projectIdSearch(projectId, value) ||
+          postIdSearch(postId, value) ||
           titleSearch(title, value) ||
           bodySearch(body, value)
         );

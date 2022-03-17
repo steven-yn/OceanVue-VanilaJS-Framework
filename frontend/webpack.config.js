@@ -2,9 +2,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: ['./src/App.js', './src/css/main.css'],
+  entry: ['./src/App.js'],
   output: {
-    path: path.resolve(__dirname, './build'),
+    path: path.resolve(__dirname, '../backend/build'),
     filename: 'bundle.js',
   },
   devServer: {
@@ -13,6 +13,9 @@ module.exports = {
     },
     compress: true,
     port: 9010,
+    proxy: {
+      '/api': 'http://localhost:5000',
+    },
   },
   module: {
     rules: [

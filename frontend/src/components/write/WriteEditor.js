@@ -1,10 +1,7 @@
-import SubmitButtonContainer from '../../containers/SubmitButtonContainer';
-
-/** @jsx h */
+/** @jsx jsx */
 // eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  return { type, props, children };
-};
+import jsx from '../../core/jsxFuntion';
+import SubmitButtonContainer from '../../containers/SubmitButtonContainer';
 
 const WriteEditor = (Instance) => {
   return (

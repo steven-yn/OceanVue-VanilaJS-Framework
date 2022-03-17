@@ -1,13 +1,10 @@
+/** @jsx jsx */
+// eslint-disable-next-line no-unused-vars
+import jsx from '../core/jsxFuntion';
 import PostList from '../components/post/PostList';
 import { store } from '../modules';
 import * as PLM from '../modules/PostListModule';
 import Component from '../core/Component';
-
-/** @jsx h */
-// eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  return { type, props, children };
-};
 
 const compPostList = new Component();
 

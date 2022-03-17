@@ -1,11 +1,9 @@
-/** @jsx h */
+/** @jsx jsx */
 // eslint-disable-next-line no-unused-vars
-const h = (type, props, ...children) => {
-  return { type, props, children };
-};
+import jsx from '../../core/jsxFuntion';
 
 const PostTop = (post) => {
-  const { projectId, title, author, wrDate } = post;
+  const { postId, title, author, wrDate } = post;
   return (
     <div>
       <div id="PostHeader">
@@ -23,7 +21,7 @@ const PostTop = (post) => {
         </div>
       </div>
       <div id="PostHead">
-        포스트 번호 : {`${projectId}`} <br />
+        포스트 번호 : {`${postId}`} <br />
         작성자 : {author} <br />
         작성일 : {wrDate}
       </div>
