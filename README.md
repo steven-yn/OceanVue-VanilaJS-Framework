@@ -26,10 +26,16 @@ _(~~사실 React에 더 가까우나 yoonOcean에 맞는 별칭을 지어주고 
 
 #### backend
 
--[x] devDependency 정리 -[x] cors 대신 webpack proxy 이용하기 -[x] node 에서 webpack build 된 파일 사용하기
+- [x] devDependency 정리
+- [x] cors 대신 webpack proxy 이용하기
+- [x] node 에서 webpack build 된 파일 사용하기
 
 #### frontend
 
--[x] App.js 에서 main.css import 하여 사용하기 -[x] webpack proxy 이용하기 -[x] jsx 변환 함수 별도의 함수로 분리하기 -[x] App.js 필요없는 export 지우기 -[x] api 요청 보내는 로직 추상화하기
+- [x] App.js 에서 main.css import 하여 사용하기
+- [x] webpack proxy 이용하기
+- [x] jsx 변환 함수 별도의 함수로 분리하기
+- [x] App.js 필요없는 export 지우기
+- [x] api 요청 보내는 로직 추상화하기
 
 ### 미구현 요구사항
