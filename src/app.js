@@ -31,6 +31,9 @@ app.use('/api', apiRoutes);
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
+app.get('/bundle.js', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/bundle.js'));
+});
 
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 5001);
 console.log('server ready');
