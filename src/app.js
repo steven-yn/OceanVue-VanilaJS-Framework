@@ -29,3 +29,4 @@ app.use(express.json());
 app.use('/api', apiRoutes);
 
 app.listen(process.env.PORT || 5000);
+console.log('server ready');
