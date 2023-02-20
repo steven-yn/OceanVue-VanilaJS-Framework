@@ -188,9 +188,7 @@ const Component = (function () {
 
   Component.prototype.getPostList = async function () {
     try {
-      const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
-      );
+      const res = await fetch(`https://oceanvue-steven-yn.koyeb.app/`);
       const body = await res.json();
 
       if (res.status === 404) {
@@ -214,9 +212,7 @@ const Component = (function () {
 
   Component.prototype.refresh = async function () {
     try {
-      const res = await fetch(
-        `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
-      );
+      const res = await fetch(`https://oceanvue-steven-yn.koyeb.app/`);
       const body = await res.json();
 
       if (res.status === 404) {

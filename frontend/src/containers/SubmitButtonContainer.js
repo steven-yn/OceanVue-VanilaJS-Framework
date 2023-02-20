@@ -58,7 +58,7 @@ const SubmitButtonContainer = (Instance) => {
       try {
         const res = await fetch(
           //[123]
-          `https://yoonocean-zum-board-backend.herokuapp.com/api/`,
+          `https://oceanvue-steven-yn.koyeb.app/`,
           {
             method: 'POST',
             headers: { 'content-Type': 'application/json' },
@@ -83,7 +83,7 @@ const SubmitButtonContainer = (Instance) => {
     async function postUpdate(state) {
       try {
         const res = await fetch(
-          `https://yoonocean-zum-board-backend.herokuapp.com/api/${state.projectId}`,
+          `https://oceanvue-steven-yn.koyeb.app/${state.projectId}`,
           {
             method: 'PATCH',
             headers: { 'content-Type': 'application/json' },
