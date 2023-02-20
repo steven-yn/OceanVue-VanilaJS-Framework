@@ -1,6 +1,7 @@
 import express from 'express';
 import apiRoutes from './api/index';
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 /*
@@ -27,6 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use('/api', apiRoutes);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname + '../frontend/build/index.html'));
+});
 
 app.listen(process.env.PORT || 5000);
 console.log('server ready');

@@ -28,7 +28,7 @@ const PostContainer = () => {
   async function getPost(projectId) {
     try {
       const res = await fetch(
-        `https://oceanvue-steven-yn.koyeb.app/${projectId}`,
+        `https://oceanvue-steven-yn.koyeb.app/api/${projectId}`,
       );
       if (res.status === 404) {
         return (location.href = '#error');
@@ -44,7 +44,7 @@ const PostContainer = () => {
   async function deletePost(projectId) {
     try {
       const res = await fetch(
-        `https://oceanvue-steven-yn.koyeb.app/${projectId}`,
+        `https://oceanvue-steven-yn.koyeb.app/api/${projectId}`,
         {
           method: 'DELETE',
         },
